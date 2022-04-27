@@ -1,7 +1,7 @@
 
 ## Overview
 
-`mat2qubit` is a Python package for converting a matrix operators into a Pauli operator representation. Single particles/subsystems as well as interaction particles (e.g. many-body Hamiltonians) may be processed. More formally, the code takes sums of tensor products of arbitrarily sized matrices, and maps them to sums of Pauli products with a chosen encoding.
+`mat2qubit` is a Python package for converting matrix operators into a Pauli operator representation. Single particles/subsystems as well as interacting particles (e.g. many-body Hamiltonians) may be processed. More formally, the code takes sums of tensor products of arbitrarily sized matrices, and maps them to sums of Pauli products with a chosen encoding. The code assumes trivial (i.e. bosonic etc) commutation, meaning that it cannot be used for fermionic particles.
 
 <!--
 ```math
