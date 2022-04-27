@@ -23,13 +23,12 @@ Contact: nicolas.sawaya@intel.com
 
 ## Installation
 
-We recommend one of these installation options:
-#### Option 1
-`pip install dist/mat2qubit-0.0.1-py3-none-any.whl`
+We recommend one of two installation options:
 
-#### Option 2
+#### Option 1
 `python setup.py bdist_wheel`  
 `pip install dist/*.whl`
 
-#### Option 3
-In your `.bash_profile` include the path to the `mat2qubit` directory in `PATH` and `PYTHONPATH`.
+#### Option 2
+In your `.bash_profile` include the path to the `mat2qubit` directory in `PATH` and `PYTHONPATH`.a
+
