@@ -1,14 +1,12 @@
-OUT OF DATE. USE https://github.com/IntelLabs/mat2qubit INSTEAD.
 
 ## Overview
 
-`mat2qubit` is a Python package for converting a matrix operators into a Pauli operator representation. Single particles/subsystems as well as interaction particles (e.g. many-body Hamiltonians) may be processed. More formally, the code takes sums of tensor products of arbitrarily sized matrices, and maps them to sums of Pauli products with a chosen encoding:
+`mat2qubit` is a Python package for converting a matrix operators into a Pauli operator representation. Single particles/subsystems as well as interaction particles (e.g. many-body Hamiltonians) may be processed. More formally, the code takes sums of tensor products of arbitrarily sized matrices, and maps them to sums of Pauli products with a chosen encoding.
 
 <!--
 ```math
 \sum \cdots \otimes M \otimes N \otimes \cdots \rightarrow \sum \bigotimes \{I,\sigma_x,\sigma_y,\sigma_z\}
 ```
-<img src="https://render.githubusercontent.com/render/math?math=\sum \cdots \otimes M \otimes N \otimes \cdots \rightarrow \sum \bigotimes \{I,\sigma_x,\sigma_y,\sigma_z\}">
 -->
 
 The package can be used to implement different encodings for which there are often depth-space tradeoffs (see references below). The built-in encodings include <b>standard binary</b>, <b>Gray code</b>, <b>unary (one-hot)</b>, and <b>block unary</b>. User-defined embeddings may be added by modifying `integer2bit.py`.
@@ -21,7 +19,6 @@ Please see the two files in the `examples/` directory for worked examples of Bos
 
 Intel Labs 2020 - 2022.
 Contact: nicolas.sawaya@intel.com
-Contributors: Nicolas Sawaya (PCL)
 
 
 ## Installation
