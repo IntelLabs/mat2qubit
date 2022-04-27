@@ -1,0 +1,40 @@
+
+
+# https://packaging.python.org/tutorials/packaging-projects/
+
+
+sphinx:
+# Great starting doc:
+https://medium.com/@eikonomega/getting-started-with-sphinx-autodoc-part-1-2cebbbca5365
+# To get pdf to work:
+https://stackoverflow.com/questions/39534718/how-to-create-a-pdf-out-of-sphinx-documentation-tool
+
+It works now!
+html command (while in docs/):
+$ make html
+pdf command (while in docs/):  
+$ sphinx-build -b pdf . _build/
+
+
+
+files to include:
+dLevelSystemEncodgins
+integer2bit
+dLevelUtils
+qopmats
+(examples)
+(include symbop stuff too?) (I think it makes sense to. Don't need examples necessarily.)
+
+(of_util?) --> probably don't include, so as to minimize interface with OF
+
+
+
+
+
+
+
+misc:
+readme rst vs md:
+https://www.quora.com/Why-do-a-lot-of-Python-projects-use-README-rst-instead-of-README-md
+
+
