@@ -1,3 +1,6 @@
+# Copyright (C) 2020-2022 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+
 # helperDLev.py
 
 """Helper functions for mat2qubit."""

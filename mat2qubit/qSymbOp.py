@@ -1,3 +1,6 @@
+# Copyright (C) 2020-2022 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+
 '''qSymbOp is a parent class for symbolic operations in quantum mechanics'''
 
 import numpy as np
