@@ -9,7 +9,7 @@
 ```
 -->
 
-The package can be used to implement different encodings for which there are often depth-space tradeoffs or other resource tradeoffs (see references below). The built-in encodings include <b>standard binary</b>, <b>Gray code</b>, <b>unary (one-hot)</b>, and <b>block unary</b>. User-defined embeddings may be added by modifying `integer2bit.py`. This is part of the implementation of the "discrete quantum intermediate representation" (DQIR) developed in reference [2] below.
+The package can be used to implement different encodings for which there are often depth-space tradeoffs or other resource tradeoffs (see references below). The built-in encodings include <b>standard binary</b>, <b>Gray code</b>, <b>unary (one-hot)</b>, and <b>block unary</b>. User-defined embeddings may be added by modifying `integer2bit.py`. This package is a partial implementation of the "discrete quantum intermediate representation" (DQIR) developed in reference [2] below.
 
 Mathematical and theoretical details can be found in these references:
 1. Sawaya, NPD, Menke, T, Kyaw, TH, Johri, S, Aspuru-Guzik, A and Guerreschi, GG. [npj Quantum Information, 6(49)](https://www.nature.com/articles/s41534-020-0278-0) (2020).
