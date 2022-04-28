@@ -30,5 +30,5 @@ We recommend one of two installation options:
 `pip install dist/*.whl`
 
 #### Option 2
-In your `.bash_profile` include the path to the `mat2qubit` directory in `PATH` and `PYTHONPATH`.a
+In your `.bash_profile` include the path to the `mat2qubit` directory in `PATH` and `PYTHONPATH`.
 
