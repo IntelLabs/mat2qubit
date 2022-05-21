@@ -83,11 +83,6 @@ def getfunc_dec2blockunary(g,localEncodingFunc):
         # What block is inp in?
         blockId = int( np.floor( inp/g ) )
         
-        # print("")
-        # print("***inp: {} ***".format(inp) )
-        # print("blockVal: ", blockVal)
-        # print("nBlocks: ",nBlocks)
-        # print("blockId: ",blockId)
 
         bits = [0]*(blockSize*nBlocks)
         for blockBit,bitval in enumerate(blockBitList):
@@ -110,7 +105,9 @@ def dec2blockunary(inp,lmax,g,localEncodingFunc):
 def getBitMask(intval,lmax,enc,params=None):
     '''Returns the relevant bitmask subset.
     
-    Returns a list of True and False.'''
+    Returns a list of True and False.
+    Functions calling getBitMask() assume the bitmask of |l><k| is the
+    union of each the bitmasks of '|k>' and '|l>'. '''
 
     enc,params = processEncodingString(enc,params)
 

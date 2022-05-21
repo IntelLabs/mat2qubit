@@ -8,11 +8,6 @@ import unittest
 import integer2bit as i2b
 import numpy as np
 
-# from openfermion import QubitOperator
-
-
-
-
 
 
 class i2b_tests(unittest.TestCase):
@@ -242,14 +237,6 @@ class i2b_tests(unittest.TestCase):
 
         def test_bu_string(s):
 
-            # i2b.int2bits(inp,lmax,enc)
-
-            # s.assertEqual( i2b.dec2blockunary(6,lmax,7,"gray"), [0, 0, 1, 0, 0, 0] )
-            # s.assertEqual( i2b.dec2blockunary(7,lmax,7,"gray"), [0, 0, 0, 1, 0, 0] )
-            # s.assertEqual( i2b.getBitMask(9, 11,"blockunary", {'g':5}), [0,0,0,1,1,1,0,0,0] )
-            # s.assertEqual( i2b.getBitMask(10,11,"blockunary", {'g':5}), [0,0,0,0,0,0,1,1,1] )
-
-
             s.assertEqual( i2b.int2bits(6,11,"bu_gray_7"), [0, 0, 1, 0, 0, 0] )
             s.assertEqual( i2b.int2bits(7,11,"bu_gray_7"), [0, 0, 0, 1, 0, 0] )
             s.assertEqual( i2b.getBitMask(9, 11,"bu_gray_5"), [0,0,0,1,1,1,0,0,0] )
@@ -258,60 +245,11 @@ class i2b_tests(unittest.TestCase):
 
 
 
-        # def test_2x2mat_sglbos2qub(s):
-        #     # Single boson matrix-operator, onto qubit
-
-        #     # Original matrix represenation
-        #     matop = np.array([[1, 2+1j],[2-1j, 4.]])
-
-        #     # Standard binary
-        #     gold = 1* qhos_symb.sglQubOp(0,0, 0) \
-        #             + (2+1j)* qhos_symb.sglQubOp(0,1, 0) \
-        #             + (2-1j)* qhos_symb.sglQubOp(1,0, 0) \
-        #             + 4* qhos_symb.sglQubOp(1,1, 0)
-        #     res  = qhos_symb.sglbosop2qubop(matop,'stdbin')
-        #     s.assertEqual(gold,res)
-
-
-        #     # Unary
-        #     gold = 1* qhos_symb.sglQubOp(1,1, 0) \
-        #             + (2+1j)* qhos_symb.sglQubOp(1,0, 0)*qhos_symb.sglQubOp(0,1, 1) \
-        #             + (2-1j)* qhos_symb.sglQubOp(0,1, 0)*qhos_symb.sglQubOp(1,0, 1) \
-        #             + 4* qhos_symb.sglQubOp(1,1, 1)
-        #     res  = qhos_symb.sglbosop2qubop(matop,'unary')
-            
-        #     s.assertEqual(gold,res)
-
-
-
 
 
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

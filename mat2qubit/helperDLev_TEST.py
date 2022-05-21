@@ -3,9 +3,6 @@
 
 # Test helperDLev.py
 
-
-# import mat2qubit as m2q # No, helper is supposed to be independent.
-
 import unittest
 # from mat2qubit import qopmats
 import qopmats
@@ -19,8 +16,6 @@ class helperDLev_tests(unittest.TestCase):
 
     def setup(self):
         pass
-
-
 
     def test_pauli_op_to_matrix(s):
 
@@ -42,10 +37,8 @@ class helperDLev_tests(unittest.TestCase):
         # # X0 with two qubits
         # pop = QubitOperator('X')
 
-
         # # X0 Z1
         # pop = QubitOperator('0.25 [X0 Z1]')
-
 
         # # X0 Z1 with three qubits
         # pop = QubitOperator('0.25 [X0 Z1]')
@@ -62,8 +55,6 @@ class helperDLev_tests(unittest.TestCase):
         print(res.shape)
         # np.testing.assert_array_equal(gold,res)
         s.assertEqual(gold.tolist(),res.tolist())
-
-
 
 
 

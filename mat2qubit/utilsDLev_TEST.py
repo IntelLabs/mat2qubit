@@ -5,15 +5,20 @@
 
 import unittest
 
-from mat2qubit.dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator#,compositeQasmBuilder
-import mat2qubit.utilsDLev as utilsDLev
-from mat2qubit.helperDLev import sglQubOp#, trotterQubop2qasm
-import mat2qubit.qopmats as qopmats
+
+
+
+
+from dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator
+import utilsDLev
+from helperDLev import sglQubOp
+import qopmats
+#from mat2qubit.dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator#,compositeQasmBuilder
+#import mat2qubit.utilsDLev as utilsDLev
+#from mat2qubit.helperDLev import sglQubOp#, trotterQubop2qasm
+#import mat2qubit.qopmats as qopmats
 
 from openfermion import QubitOperator, QuadOperator, BosonOperator, qubit_operator_sparse
-#from openfermion.utils import qubit_operator_sparse
-
-#from of_util import ofQubitOp2MatRep  # Don't want to use this anymore
 
 import functools
 
@@ -30,7 +35,6 @@ from ns_primitives import krx,dotx
 
 
 
-# NOTE: OpenFermion's __eq__ between operators already does almost-equal
 
 class dlevelutils_tests(unittest.TestCase):
     
@@ -115,18 +119,11 @@ class dlevelutils_tests(unittest.TestCase):
         # projector = qubit_operator_sparse(projpop) ******
         projector = compos_op.opStringToMatRep(1,opstr)
         
-        # nononononono. this is giving it to you *without* converting to qubits first.
-        # argh.... okay. maybe add a function.
-        # you PROBABLY want to change opStringToMatRep to mean encoding-based.
-        # Then you can do a *separate* function that does not do that....
-        # AHHH--YOU COULD JUST HAVE A PARAMETER IN THAT
-
 
 
         print(projector)
         print( type(projector) )
         print(gold_val)
-        # assert len(projector.indices)==1, projector.indices # Just making sure it's really a one-val projector (only true in dense case)
         assert len(projector.indices)==1, projector.indices # Just making sure it's really a one-val projector (only true in dense case)
         m2q_stateid = projector.indices[0]
         
@@ -166,26 +163,6 @@ class dlevelutils_tests(unittest.TestCase):
 
 
 
-
-        
-        # print("Is there a chance that openfermion itself indexes things differently? When it does qubit_operator_sparse?")
-        # # You can see if encoding a matrix and converting it back will lead to the same matrix
-        # M = np.diag(np.array([1,2,3,4.]))
-        # compos_op = compositeOperator()
-        # compos_op.appendSubsystem( dLevelSubsystem(d=4,enc="stdbinary") )
-        # pop = compos_op.opStringToPauli( 1. , ((0,M),) )
-        # # pop = compos_op.opStringToPauli( 1. , ((0,'Pr2'),) )
-        # print(pop)
-        # res = qubit_operator_sparse(pop)
-        # print(res)
-        # print("of_util:")
-        # res2 = ofQubitOp2MatRep(pop)
-        # print(res2)
-        # print("what? that one is wrong too, in the same way?")
-        
-        # res = utilsDLev.pauli_op_to_matrix(pop)
-        # print("new:")
-        # print(res)
 
         
         
@@ -275,9 +252,6 @@ class dlevelutils_tests(unittest.TestCase):
 
 
 
-        # Just use utilsDLev.bitstring_to_state_id() for these. Too complex otherwise.
-        # Do confirm that different encodings are different though.
-        # And maybe for unary case you can confirm by hand.
 
         # *** 3 sites, d=2 ***
         sites = 2
@@ -395,20 +369,6 @@ BREAK
         goldMatOp += 1.1*krx( np.array([[0,1],[0,0]]) , np.array([[0,0],[1,0]]) )
 
 
-        # Now make sure all three of these things are equivalent:
-        # * The parsed operator - composDOp
-        # * The manual operator - manualComposDOp
-        # * The manually calculated matrix op - goldMatOp
-
-        print("Warning. No test for bra-ket at the moment.")
-        # Commented out the following:
-        # # coposDOp vs manualComposDOp:
-        # np.testing.assert_array_almost_equal( 
-        #     composDOp.toFullMatRep(ignore_encoding=True) , manualComposDOp.toFullMatRep(ignore_encoding=True) )
-        # 
-        # # manualComposDOp vs goldMatOp
-        # np.testing.assert_array_almost_equal( 
-        #     manualComposDOp.toFullMatRep(ignore_encoding=True).todense() , goldMatOp.todense() )
 
 
         # *** Now do with the QASM-builder ***

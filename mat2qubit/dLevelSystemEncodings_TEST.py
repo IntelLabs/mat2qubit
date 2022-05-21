@@ -1,20 +1,15 @@
 # Copyright (C) 2020-2022 Intel Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-# dLevelSystemEncodings_TEST.py
-
 import unittest
 
-from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator #,compositeQasmBuilder
-#from dLevelUtils import ofOpToCompositeOp
+from dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator
 
 from openfermion import QubitOperator, QuadOperator, BosonOperator
 
-#from of_util import trotterQubop2qasm
-from mat2qubit.helperDLev import sglQubOp,pauli_op_to_matrix
+from helperDLev import sglQubOp,pauli_op_to_matrix
 import qopmats
 
-# import basic_qcircuit as bqc
 import functools
 import scipy.sparse as spr
 
@@ -24,8 +19,6 @@ import numpy as np
 
 class dlevel_tests(unittest.TestCase):
     
-    # static variables declared here
-    # encodings = ["","","",""]
 
     def setup(self):
         pass
@@ -47,8 +40,6 @@ class dlevel_tests(unittest.TestCase):
         
         testprec = 12
 
-        # For the first set, enter gold pauli ops manually. then use it to test of_util. then later you can 
-        # just use of_util directly.
 
 
         ss1 = dLevelSubsystem( d=3 , enc="stdbinary" )
@@ -133,12 +124,6 @@ class dlevel_tests(unittest.TestCase):
         ss.set_d(7)
         s.assertEqual( ss.nqubits,6 )
         
-    # def test_projectors(s):
-
-    #     encs = ('gray','unary','stdbinary')
-    #     ds   = (3,4,4)
-    #     compos_op = compositeOperator()
-    #     compos_op.appendSubsystem( dLevelSubsystem(d=ds[0],enc=
 
 
     
@@ -166,22 +151,6 @@ class dlevel_tests(unittest.TestCase):
         
         s.assertEqual( res,gold )
         
-        '''
-        # ************************************************
-        # Use same system to test gate counts, in qasmBuilder
-        # ************************************************
-        # Initialize qasm builder
-        qasmBuilder = compositeQasmBuilder()
-        # Add the qho-based operator from before, and add its conjugate to make hermitian
-        qasmBuilder.addHamTerm( 2.0, opString )
-        qasmBuilder.addHamTerm( 2.0, [(0,"qhoAn"),(1,"qhoCr")] )
-        # Calculate gate count
-        ncnot = qasmBuilder.countCnotUBound_IncludeBreaks(twoSite)
-        
-        # Non-herm had 16 terms, but herm op has 8 terms
-        s.assertEqual( ncnot , 6*8 ) # 8 terms, 6 cnots each
-        
-        '''
 
 
         # ************************************************
@@ -392,116 +361,6 @@ class dlevel_tests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
-cmt='''
-    def test_conversion_from_of(s):
-
-
-        # composopA0 = ofOpToCompositeOp(s,inpBosonOp,dVals,encodings)
-
-
-        # ***************
-        # Cases for one-ss operator
-        # ***************
-        # (A) One subsystem, one operator
-        bosA0 = BosonOperator('0')  # a0
-
-        composopA0 = ofOpToCompositeOp(bosA0,3,'unary')
-        # First make sure obj's system props are correct
-        s.assertEqual(composopA0.subsystems[0].enc,'unary')
-        # Make sure obj's hamTerms are correct
-        s.assertEqual(composopA0.subsystems[0].d,3)
-
-        gold = np.sqrt(1)*sglQubOp(1,0,  0)*sglQubOp(0,1,  1) + np.sqrt(2.)*sglQubOp(1,0,  1)*sglQubOp(0,1,  2)
-        res = composopA0.opToPauli()
-        s.assertEqual(res,gold)
-
-        # YOU DONT NEED TO TEST THE PAULI OPS. OK, MAYBE JUST ONCE
-        # WELL, THE SHIFT TOO
-
-
-        # (B) 3 subsys, operator only one 3rd
-        bosA2 = BosonOperator('2')  # a2
-        composopA2 = ofOpToCompositeOp(bosA2,3,'unary')
-        s.assertEqual(composopA2.subsystems[0].enc,'unary')
-        s.assertEqual(composopA2.subsystems[0].enc,'unary')
-        s.assertEqual(composopA2.subsystems[0].enc,'unary')
-        # Make sure obj's hamTerms are correct
-        s.assertEqual(composopA2.subsystems[0].d,3)
-        s.assertEqual(composopA2.subsystems[1].d,3)
-        s.assertEqual(composopA2.subsystems[2].d,3)
-
-        shift = 2*3
-        gold = np.sqrt(1)*sglQubOp(1,0,  0+shift)*sglQubOp(0,1,  1+shift) + \
-                np.sqrt(2.)*sglQubOp(1,0,  1+shift)*sglQubOp(0,1,  2+shift)
-        res = composopA2.opToPauli()
-        s.assertEqual(res,gold)
-
-        # (C) 3 subsys, operator only on 3rd, diff encodings for each
-        bosA2 = BosonOperator('2')  # a2
-        composopA2 = ofOpToCompositeOp(bosA2,[2,3,3],['stdbinary','gray','unary']) #[1 bit,2 bits, 3 bits]
-        s.assertEqual(composopA2.subsystems[0].enc,'stdbinary')
-        s.assertEqual(composopA2.subsystems[1].enc,'gray')
-        s.assertEqual(composopA2.subsystems[2].enc,'unary')
-        # Make sure obj's hamTerms are correct
-        s.assertEqual(composopA2.subsystems[0].d,2)
-        s.assertEqual(composopA2.subsystems[1].d,3)
-        s.assertEqual(composopA2.subsystems[2].d,3)
-
-        shift = 1 + 2
-        gold = np.sqrt(1)*sglQubOp(1,0,  0+shift)*sglQubOp(0,1,  1+shift) + \
-                np.sqrt(2.)*sglQubOp(1,0,  1+shift)*sglQubOp(0,1,  2+shift)
-        res = composopA2.opToPauli()
-        s.assertEqual(res,gold)
-
-
-
-        # **************************
-        # Now for a composite system with multiple operators,
-        # and this time using QuadOperator()
-        # **************************
-        # Quad Examples: q0q1 + 0.5*q1p2. All stdbin.
-        # -->   X0 X1 + 0.5 * X1 Y2
-        quadEx = QuadOperator('1[q0 q1] + 0.5[q1 p2]')
-        qubEx  = (1/np.sqrt(2))**2 * QubitOperator('1[X0 X1] + 0.5[X1 Y2]') # Same operator, assuming 2-level systems
-        # Above is 1/sqrt(2)^2=2, because q=1/sqrt(2)*X
-
-        composOpQuad = ofOpToCompositeOp(quadEx,[2,2,2],['gray','gray','gray'])
-        res = composOpQuad.opToPauli()
-        s.assertEqual(qubEx,res)
-
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

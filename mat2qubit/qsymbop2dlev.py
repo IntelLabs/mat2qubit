@@ -11,7 +11,13 @@ Converting qSymbOp operator to a mat2qubit operator.
 import numpy as np
 import itertools
 
-from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator, qopmats,qSymbOp
+from . import dLevelSubsystem,compositeDLevels,compositeOperator
+from . import qopmats
+from . import qSymbOp
+#from . import qSymbOp as qSymbOp_module
+#qSymbOp = qSymbOp_module.qSymbOp
+
+#from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator, qopmats,qSymbOp
 
 from copy import copy
 
@@ -93,10 +99,6 @@ def symbop_to_dlevcompositeop(inpSymbop,ssname_order,dvals,encodings,inpOpChars=
         composOp.appendSubsystem( dlev )
 
 
-    # NEED TO ADD CODE IN HERE TO CONFIRM THAT ALL THE SCALARS
-    # ARE COMPLEX/FLOAT/INT, I.E. THAT none of them are still symbolic...
-    # Right now this function messes up if there are any symbolic
-    # scalars left
 
 
     # Populate the operators
@@ -190,17 +192,6 @@ def symbop_pauli_to_mat(inpString,ssname_order):
     
 
 
-
-'''
-# Should be some kind of function like this,
-# to get back the qubit numbers corresponding to
-# a given ssid-tag.
-def qubitsForSubsystem():
-
-    # Actually, possibly just want this in the dlev library, based on ss_name
-
-    pass
-'''
 
 
 

@@ -15,11 +15,9 @@ Notes:
 Purpose of this code is to be able to have *both* coefficients and subspaces
 be symbolic.
 
-Another main PURPOSE is that it is useful for MIXED types of DOF.
+Another main purpose is that it is useful for mixed types of DOF.
 
 Between terms you are *required* to use '++'
-
-TODO: Allow for arbitrary commutation relations.
 '''
 
 
@@ -28,8 +26,7 @@ class qSymbOpError(Exception):
     pass
 
 
-# Wrapper for the sympy library (So that sympy doesn't have to be imported to module)
-# (In case you ever write your own code for symbolic scalar, or use different lib)
+# Wrapper for the sympy library (in principle other symoblic engine may be used)
 symbScalarFromStr = sympy.sympify
 
 
@@ -47,16 +44,6 @@ def is_symbolic(symbScalar):
 
 class qSymbOp(object):
     '''Parent class for symbolic quantum operators.
-    '''
-
-    '''
-    Things to eventually add:
-    * Should be able to have a child class that restricts many things,
-        and those restrictions should be abstractly handled by parent.
-    * This should include commutation relations
-    * Want to eventually be able to have each particle belong to a different CLASS
-        of particle. You'd be able to say that some are elec dofs, some are vibr dofs,
-        etcs. You could easily have two diff types of bosonic operator too, btw.
     '''
 
 
@@ -172,10 +159,6 @@ class qSymbOp(object):
             opStringTuple += ((ssid,op),)
 
 
-
-        # You'll have to do something with sorting later on, based on a different input.
-        # sorted() does this in both fields automatically. wonderful.
-        # opStringKey = tuple(sorted(opStringTuple))
         opStringKey = opStringTuple
 
         # Case of identity
@@ -197,7 +180,6 @@ class qSymbOp(object):
             opStringKey = s.parseOpStringStr(opString)
         else:
             assert s.isValidOpTuple(opString)
-            # opStringKey = tuple(sorted(opString)) # No sorting! Add commutation features later
             opStringKey = opString
 
         if opStringKey in s.fullOperator.keys():
@@ -212,7 +194,7 @@ class qSymbOp(object):
 
         When commutation relations etc are added, this will become more complex;
         But for now, you're just concatenating two lists
-        without any simplification at all.
+        without any simplification.
         '''
 
         return opString1 + opString2
@@ -268,8 +250,6 @@ class qSymbOp(object):
 
         if not s.diffSsidsCommute:
             raise Exception("This function implemented only for diffSsidsCommute=True.")
-
-        # assert isinstance( inpOp , qSymbOp )
 
 
         q_ops = ['qhoPos','Qsq','q','q2','q3','q4','q5','q6']
@@ -440,19 +420,6 @@ class qSymbOp(object):
         return newOp
 
 
-  #   def __iadd__(s, inp):
-  #     pass
-    
-
-  #   def __sub__(s, inp):
-  #     pass
-
-  #   def __isub__(s, inp):
-  #     pass
-
-
-  #   def __repr__(s):
-  #     return str(s)
 
     def __rmul__(s,inp):
 
@@ -497,56 +464,6 @@ class qSymbOp(object):
 
         # Return
         return newOp
-
-
-
-  #   def __imul__(s, inp):
-  #     pass
-
-  #   def __rmul__(s, inp):
-  #       pass
-    
-  #   def __eq__(s, inp):
-  #     pass
-
-
-
-
-  #   def __truediv__(s, inp):
-  #     raise TypeError("__truediv__ not yet supported.")
-
-  #   def __div__(s, inp):
-  #     raise TypeError("__div__ not yet supported.")
-
-  #   def __itruediv__(s, inp):
-  #     raise TypeError("__itruediv__ not yet supported.")
-
-  #   def __idiv__(s, inp):
-  #     raise TypeError("__idiv__ not yet supported.")
-
-  #   def __pow__(s, inp):
-        # raise TypeError("__pow__ not yet supported.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

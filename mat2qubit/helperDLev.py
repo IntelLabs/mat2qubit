@@ -84,55 +84,6 @@ def countCNOTs_trot1_noopt(qubop):
 
     return ctrCnots
 
-'''
-def getFullHilbRepFromLocOp(locop,locId,subspaceSizes, dtype_default=complex):
-
-    numSS = len(subspaceSizes)
-
-    assert locop.shape[0]==locop.shape[1] , locop.shape # confirm square
-    assert locop.shape[0]==subspaceSizes[locId]
-
-    fullHilbOp = np.eye(1,dtype=dtype_default)
-
-    for i in range(locId):
-        fullHilbOp = np.kron(fullHilbOp,np.eye(subspaceSizes[i]))
-    fullHilbOp = np.kron(fullHilbOp,locop)
-    for i in range(locId+1,numSS):
-        fullHilbOp = np.kron(fullHilbOp,np.eye(subspaceSizes[i]))
-
-    return fullHilbOp
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

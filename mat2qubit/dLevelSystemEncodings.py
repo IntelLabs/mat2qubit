@@ -14,13 +14,27 @@ import itertools
 import re
 
 # Openfermion methods
-from openfermion import QubitOperator #, BosonOperator, QuadOperator
+from openfermion import QubitOperator 
 from openfermion.utils import is_hermitian
 
 # This package
-import mat2qubit.integer2bit as i2b
-from mat2qubit import qopmats
-from mat2qubit.helperDLev import sglQubOp,countCNOTs_trot1_noopt,pauli_op_to_matrix #,getFullHilbRepFromLocOp
+from . import integer2bit as i2b
+from . import qopmats
+from . import helperDLev
+sglQubOp = helperDLev.sglQubOp
+countCNOTs_trot1_noopt = helperDLev.countCNOTs_trot1_noopt
+pauli_op_to_matrix = helperDLev.pauli_op_to_matrix
+
+#from . import helperDLev.sglQubOp as sglQubOp
+#from . import helperDLev.countCNOTs_trot1_noopt as countCNOTs_trot1_noopt
+#from . import helperDLev.countCNOTs_trot1_noopt as pauli_op_to_matrix
+
+
+
+
+#import mat2qubit.integer2bit as i2b
+#from mat2qubit import qopmats
+#from mat2qubit.helperDLev import sglQubOp,countCNOTs_trot1_noopt,pauli_op_to_matrix 
 
 
 
@@ -217,12 +231,6 @@ class dLevelSubsystem():
                 bra = int(spl[1])
                 return qopmats.singleElement(s.d, ket,bra)
                 
-                # elif inpOp[:2]=="kb":  # KetBra
-                # ket = int(inpOp[2])
-                # bra = int(inpOp[3])
-
-
-
 
 
             else:
@@ -458,7 +466,7 @@ class compositeDLevels():
 
     def setEncoding(s,ss,enc,encParams=None):
         """Not implemented"""
-        pass
+        raise NotImplementedError()
         # assert( enc in i2b.encodings )
         # assert( encParams==None or isinstance(encParams,dict) )
         
@@ -534,10 +542,6 @@ class compositeOperator(compositeDLevels):
             s.subsystems = deepcopy(inpCompositeSys.subsystems)
             s.totalQubits = inpCompositeSys.totalQubits
 
-        '''
-        s.subsystems = []  # List of dlevel subsystem objects        
-        s.totalQubits = 0
-        '''
 
         s.hamTerms = []
 
@@ -584,9 +588,6 @@ class compositeOperator(compositeDLevels):
 
         return pauliHam
 
-    # def opToMatRep(s,):
-
-    #     have a dict-->matrices.
 
     def toFullMatRep(s, ignore_encoding=False):
         """Returns full Hilbert space matrix representation
@@ -602,7 +603,6 @@ class compositeOperator(compositeDLevels):
             hilbSize = 2**s.getNumQub()
 
         # Start with identity
-        # fullmatrep = np.zeros((hilbSize,hilbSize),dtype=complex)
         fullmatrep = spr.lil_matrix((hilbSize,hilbSize),dtype=complex)
 
         for term in s.hamTerms:
@@ -612,7 +612,6 @@ class compositeOperator(compositeDLevels):
 
             fullmatrep += s.opStringToMatRep( coeff,opString, ignore_encoding )
 
-        # print('*** ',type(fullmatrep))
         return fullmatrep
 
 
@@ -690,10 +689,6 @@ class compositeOperator(compositeDLevels):
 
 
 
-
-
-
-
 class compositeQasmBuilder():
     """Simple class for outputting Trotterized QASM circuits."""
 
@@ -715,9 +710,6 @@ class compositeQasmBuilder():
         cmd.append(deepcopy(opString))
         s.circCommands.append( cmd )
 
-        # pass
-        # # op can be string or np.array. If it's str, check enum. If it's array, check size against d.
-        # Add Ham Term or Command...
 
     def addBreak(s):
         s.circCommands.append(["BREAK",])
@@ -731,10 +723,6 @@ class compositeQasmBuilder():
 
     def hamToPauli(s,compositeSys):
 
-        # As currently written, this function
-        # would not properly account for converting
-        # between encodings. (But conversion is not yet
-        # implemented in this class.)
 
         assert isinstance(compositeSys,compositeDLevels)
 
@@ -767,16 +755,10 @@ class compositeQasmBuilder():
             cmdType = cmd[0]
             
 
-            # Later, need to reset pauliOp when break happens
-            # Function will be substantially rewritten, with
-            # 'yield' in more places
 
             if cmdType=="HAM":
                 coeff = cmd[1]
                 opString = cmd[2]
-                # pauliOp = compositeSys.opStringToPauli(coeff,opString)
-                # # print(pauliOp)
-                # yield pauli_exp_to_qasm(pauliOp)
 
                 pauliOp += compositeSys.opStringToPauli(coeff,opString)
 
@@ -793,30 +775,8 @@ class compositeQasmBuilder():
 
         yield pauliOp
 
-    # def yieldQasmIncludeBreaks(s,compositeSys,frmt):
-        
-    #     for qubOp in s.yieldPauliOpsIncludeBreaks(compositeSys):
-    #         yield trotterQubop2qasm(qubOp,frmt)
 
 
-    '''
-    def getQasmString_IncludeBreaks(s,compositeSys,frmt):
-        strQasm = ""
-        # for qasmChunk in s.yieldQasmIncludeBreaks(compositeSys,frmt):
-        #     strQasm += qasmChunk
-        #     strQasm += "\n"
-
-        for qubOp in s.yieldPauliOpsIncludeBreaks(compositeSys):
-            # yield trotterQubop2qasm(qubOp,frmt)
-            for chunk in trotterQubop2qasm(qubOp,frmt):
-                strQasm += chunk
-                # strQasm += "\n"
-
-            # strQasm += "\n".join( qasmChunk for qasmChunk in \
-                # s.yieldQasmIncludeBreaks(compositeSys,frmt) )        
-
-        return strQasm
-    '''
 
 
     def yieldPauliOpsEachTerm(s,compositeSys):
@@ -826,8 +786,6 @@ class compositeQasmBuilder():
         pass
 
    
-    # Eventually, let a user-defined Hamiltonian exist in here too.
-
     # Counts upper bound of #CNOTs
     def countCnotUBound_IncludeBreaks(s,compositeSys):
 
@@ -840,43 +798,6 @@ class compositeQasmBuilder():
             nCnot += countCNOTs_trot1_noopt( pauliString )
 
         return nCnot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

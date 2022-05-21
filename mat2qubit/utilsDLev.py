@@ -7,11 +7,23 @@
 
 from __future__ import absolute_import
 
-from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator,compositeQasmBuilder
-from mat2qubit import integer2bit as i2b
-from mat2qubit import qopmats
+from . import dLevelSystemEncodings
+dLevelSubsystem = dLevelSystemEncodings.dLevelSubsystem
+compositeDLevels = dLevelSystemEncodings.compositeDLevels
+compositeOperator = dLevelSystemEncodings.compositeOperator
+compositeQasmBuilder = dLevelSystemEncodings.compositeQasmBuilder
+from . import integer2bit as i2b
+from . import qopmats
+#from . import dLevelSubsystem,compositeDLevels,compositeOperator,compositeQasmBuilder
+
+#from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator,compositeQasmBuilder
+#from mat2qubit import integer2bit as i2b
+#from mat2qubit import qopmats
+
+
+
+
 from openfermion import QubitOperator, BosonOperator, QuadOperator
-#from openfermion.utils import is_hermitian, count_qubits, hermitian_conjugated, qubit_operator_sparse
 from openfermion import is_hermitian, count_qubits, hermitian_conjugated, qubit_operator_sparse
 
 
@@ -22,7 +34,6 @@ import scipy.sparse as spr
 import copy
 
 
-# from openfermion import SymbolicOperator,QubitOperator
 
 import itertools
 import functools
@@ -77,7 +88,6 @@ def integerstring_to_bitstring(intstring,sysdlev):
     # Remember, lmax = d-1
     bstring = [ i2b.int2bits(intstring[i],dvals[i]-1,encs[i],encparams[i]) for i in range(num_ss) ]
 
-# IndexError should be raised in the int2bits function, if the val is greater than lmax....
 
     return tuple( itertools.chain.from_iterable(bstring) )
 

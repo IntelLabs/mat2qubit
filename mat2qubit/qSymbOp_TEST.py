@@ -13,10 +13,6 @@ import qSymbOp
 
 
 
-'''
-PURPOSE of this code is to be able to have *both* coefficients and subspaces
-be symbolic. For now, putting this on the backburner though.
-'''
 
 
 class qSymbOp_test(unittest.TestCase):
@@ -26,13 +22,6 @@ class qSymbOp_test(unittest.TestCase):
         s.globalop1 = qSymbOp.qSymbOp('1 [X_1 Z_v2]')
         s.globalop2 = qSymbOp.qSymbOp('-kk [X_1 Z_v2]')
 
-    #   How should I *access* the individual terms. Should not allow indexed access.
-    #   Maker iterator (generator), than can also be used to pull it all out at once
-    #   Should maybe actually have each string be like a 'struct' of terms, and each op
-    #   in each term would be accessed by (thelocalop.op) and (thelocalop.ss) OR by simply 0 and 1.
-
-    # NO ACTUALLY. DONT DO THIS. KEEP AS DICT OF TUPLE OF 2-TUPLES.
-    # What you COULD do though is have functions that wrap around the dict?
 
 
 
@@ -69,10 +58,6 @@ class qSymbOp_test(unittest.TestCase):
         with s.assertRaises( IndexError ):
             symop1.getCoeff( (('1','Y'),) )   # Since operator 'Y' isn't one of allowed ops
 
-        # # getOpstringsContainingLocalOp(): Get opstrings containing this one
-        # # Will return its own qSymbOp object, holding a subset of the full operator
-        # s.assertEqual( str(symop.getOpstringsContainingLocalOp(('v2','Z'))) , '[X_1 Z_v2]' )
-        # This funcion seemed pointless
 
     def test_str_read_1_symbCoeff(s):
         symop1 = qSymbOp.qSymbOp('-kk [X_1 Z_v2]')
@@ -117,7 +102,6 @@ class qSymbOp_test(unittest.TestCase):
         opstringTuple1 = ( ('1','X'), ('v2','Z'), )
         opstringTuple2 = ( ('1','Y'), ('v3','Z'), )
         # Third one in different order to ensure that code is sorting the tuples
-        # [OH CRAP. YOU DON'T WANT TO SORT THE INDIVIDUAL TUPLES.]
         opstringTuple3 = ( ('1','Z'), ('v3','Z'), ('v4','bigop'), ) 
         opStringTuple3_wrongorder = ( ('v4','bigop'), ('1','Z'), ('v3','Z'), ) 
 
@@ -289,7 +273,6 @@ class qSymbOp_test(unittest.TestCase):
     #   prodop = symop1*symop1
     #   s.assertEqual( str(prodop) , '[X_0 Y_1 X_0 Y_1] + 4 [X_0 Y_1 Z_2 W_4] + 4 [Z_2 W_4 Z_2 W_4]' )
 
-    #   # test re-grouping when terms are the same
 
 
     def test_orderTerms(s):
@@ -359,10 +342,6 @@ class qSymbOp_test(unittest.TestCase):
         s.assertEqual(res,gold)
         
         
-        # mixx some other ops in there
-        # change up the ordering
-        # mix in all types of strings
-        # commutation not messed up
 
 
 

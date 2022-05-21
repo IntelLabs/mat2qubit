@@ -11,13 +11,14 @@ import unittest
 
 import numpy as np
 
-#from dLevelSystemEncodings import compositeDLevels,compositeOperator
-from mat2qubit import compositeDLevels,compositeOperator
+from dLevelSystemEncodings import compositeDLevels,compositeOperator
+#from mat2qubit import compositeDLevels,compositeOperator
 import qSymbOp
 
 from qsymbop2dlev import symbop_to_dlevcompositeop, symbop_pauli_to_mat
 
-from mat2qubit import qopmats
+import qopmats
+#from mat2qubit import qopmats
 
 from functools import reduce
 
