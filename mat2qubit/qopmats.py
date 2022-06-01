@@ -5,9 +5,9 @@
 # Simple quantum operators
 
 
-import numpy as np
 from functools import reduce
 
+import numpy as np
 
 # Operators for half-spin systems
 qub = dict()

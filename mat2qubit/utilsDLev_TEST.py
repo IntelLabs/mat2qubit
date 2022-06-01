@@ -3,37 +3,37 @@
 
 # dLevelUtils_TEST.py
 
+import functools
 import unittest
+from io import StringIO
 
+import numpy as np
+import scipy.linalg as la
+import scipy.sparse as spr
+from ns_primitives import dotx, krx
+from openfermion import (
+    BosonOperator,
+    QuadOperator,
+    QubitOperator,
+    qubit_operator_sparse,
+)
 
-from dLevelSystemEncodings import dLevelSubsystem, compositeDLevels, compositeOperator
-import utilsDLev
-from helperDLev import sglQubOp
 import qopmats
+import utilsDLev
+from dLevelSystemEncodings import compositeDLevels, compositeOperator, dLevelSubsystem
+from helperDLev import sglQubOp
 
 # from mat2qubit.dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator#,compositeQasmBuilder
 # import mat2qubit.utilsDLev as utilsDLev
 # from mat2qubit.helperDLev import sglQubOp#, trotterQubop2qasm
 # import mat2qubit.qopmats as qopmats
 
-from openfermion import (
-    QubitOperator,
-    QuadOperator,
-    BosonOperator,
-    qubit_operator_sparse,
-)
 
-import functools
 
-from io import StringIO
 
 # import basic_qcircuit as bqc
 
 
-import numpy as np
-import scipy.linalg as la
-import scipy.sparse as spr
-from ns_primitives import krx, dotx
 
 
 class dlevelutils_tests(unittest.TestCase):

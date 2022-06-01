@@ -3,11 +3,11 @@
 
 """qSymbOp is a parent class for symbolic operations in quantum mechanics"""
 
-import numpy as np
 import re
-import sympy
-
 from copy import copy, deepcopy
+
+import numpy as np
+import sympy
 
 """
 Notes:

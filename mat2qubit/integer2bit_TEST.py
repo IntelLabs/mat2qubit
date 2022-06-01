@@ -4,9 +4,9 @@
 
 import unittest
 
+import numpy as np
 
 import integer2bit as i2b
-import numpy as np
 
 
 class i2b_tests(unittest.TestCase):

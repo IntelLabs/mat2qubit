@@ -5,22 +5,23 @@
 
 """Contains classes for single- and multi-particle systems"""
 
-# Common libraries
-import numpy as np
-from copy import deepcopy
 import functools
-import scipy.sparse as spr
 import itertools
 import re
+from copy import deepcopy
+
+# Common libraries
+import numpy as np
+import scipy.sparse as spr
 
 # Openfermion methods
 from openfermion import QubitOperator
 from openfermion.utils import is_hermitian
 
 # This package
+from . import helperDLev
 from . import integer2bit as i2b
 from . import qopmats
-from . import helperDLev
 
 sglQubOp = helperDLev.sglQubOp
 countCNOTs_trot1_noopt = helperDLev.countCNOTs_trot1_noopt

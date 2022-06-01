@@ -8,21 +8,19 @@ Tests for qsymbop2dlev.py
 """
 
 import unittest
+from functools import reduce
 
 import numpy as np
 
-from dLevelSystemEncodings import compositeDLevels, compositeOperator
+import qopmats
 
 # from mat2qubit import compositeDLevels,compositeOperator
 import qSymbOp
-
-from qsymbop2dlev import symbop_to_dlevcompositeop, symbop_pauli_to_mat
-
-import qopmats
+from dLevelSystemEncodings import compositeDLevels, compositeOperator
+from qsymbop2dlev import symbop_pauli_to_mat, symbop_to_dlevcompositeop
 
 # from mat2qubit import qopmats
 
-from functools import reduce
 
 
 class symb2qubit_test(unittest.TestCase):

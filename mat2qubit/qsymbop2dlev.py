@@ -8,19 +8,18 @@ Converting qSymbOp operator to a mat2qubit operator.
 """
 
 
-import numpy as np
 import itertools
+from copy import copy
 
-from . import dLevelSubsystem, compositeDLevels, compositeOperator
-from . import qopmats
-from . import qSymbOp
+import numpy as np
+
+from . import compositeDLevels, compositeOperator, dLevelSubsystem, qopmats, qSymbOp
 
 # from . import qSymbOp as qSymbOp_module
 # qSymbOp = qSymbOp_module.qSymbOp
 
 # from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator, qopmats,qSymbOp
 
-from copy import copy
 
 
 # Built-in operators. These match with the mat2qubit library.

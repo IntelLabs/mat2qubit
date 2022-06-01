@@ -5,8 +5,9 @@
 
 import unittest
 
-import qopmats
 import numpy as np
+
+import qopmats
 
 
 class i2b_tests(unittest.TestCase):

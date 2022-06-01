@@ -3,15 +3,16 @@
 
 # Test helperDLev.py
 
+import functools
 import unittest
+
+import numpy as np
+from openfermion import QubitOperator
+
+import helperDLev
 
 # from mat2qubit import qopmats
 import qopmats
-from openfermion import QubitOperator
-import functools
-import numpy as np
-
-import helperDLev
 
 
 class helperDLev_tests(unittest.TestCase):

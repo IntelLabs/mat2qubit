@@ -13,6 +13,24 @@ dLevelSubsystem = dLevelSystemEncodings.dLevelSubsystem
 compositeDLevels = dLevelSystemEncodings.compositeDLevels
 compositeOperator = dLevelSystemEncodings.compositeOperator
 compositeQasmBuilder = dLevelSystemEncodings.compositeQasmBuilder
+import copy
+import functools
+import itertools
+import random
+
+import numpy as np
+import scipy.linalg as la
+import scipy.sparse as spr
+from openfermion import (
+    BosonOperator,
+    QuadOperator,
+    QubitOperator,
+    count_qubits,
+    hermitian_conjugated,
+    is_hermitian,
+    qubit_operator_sparse,
+)
+
 from . import integer2bit as i2b
 from . import qopmats
 
@@ -23,26 +41,12 @@ from . import qopmats
 # from mat2qubit import qopmats
 
 
-from openfermion import QubitOperator, BosonOperator, QuadOperator
-from openfermion import (
-    is_hermitian,
-    count_qubits,
-    hermitian_conjugated,
-    qubit_operator_sparse,
-)
 
 
-import numpy as np
-import scipy.linalg as la
-import scipy.sparse as spr
-
-import copy
 
 
-import itertools
-import functools
 
-import random
+
 
 EQ_TOLERANCE = 1e-12
 

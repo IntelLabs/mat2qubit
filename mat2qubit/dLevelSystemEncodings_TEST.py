@@ -1,19 +1,16 @@
 # Copyright (C) 2020-2022 Intel Corporation
 # SPDX-License-Identifier: Apache-2.0
 
+import functools
 import unittest
 
-from dLevelSystemEncodings import dLevelSubsystem, compositeDLevels, compositeOperator
-
-from openfermion import QubitOperator, QuadOperator, BosonOperator
-
-from helperDLev import sglQubOp, pauli_op_to_matrix
-import qopmats
-
-import functools
-import scipy.sparse as spr
-
 import numpy as np
+import scipy.sparse as spr
+from openfermion import BosonOperator, QuadOperator, QubitOperator
+
+import qopmats
+from dLevelSystemEncodings import compositeDLevels, compositeOperator, dLevelSubsystem
+from helperDLev import pauli_op_to_matrix, sglQubOp
 
 # NOTE: OpenFermion's __eq__ between operators already does almost-equal
 

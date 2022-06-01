@@ -6,12 +6,12 @@
 """Helper functions for mat2qubit."""
 
 
-from openfermion import QubitOperator, count_qubits, qubit_operator_sparse
-import numpy as np
 import functools
 import operator
-
 import random
+
+import numpy as np
+from openfermion import QubitOperator, count_qubits, qubit_operator_sparse
 
 EQ_TOLERANCE = 1e-12
 
