@@ -33,7 +33,12 @@ setup(
         "sympy>=1.3",
         "scipy>=1.1",
         "openfermion>=1.0"
-    ]
+    ],
+    extras_require={"dev": [
+        "black~=22.3.0",
+        "flake8~=4.0.1",
+        "isort~=5.10.1",
+    ]}
 )
 
 
