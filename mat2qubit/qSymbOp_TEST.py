@@ -18,7 +18,7 @@ class qSymbOp_test(unittest.TestCase):
 
         symop1 = qSymbOp.qSymbOp("3 [Z_v2 ]")
 
-        opstringTuple = (("v2", "Z"),)
+        # opstringTuple = (("v2", "Z"),)
 
         s.assertEqual(symop1.getSsids(), {"v2"})
         s.assertEqual(str(symop1), "((3+0j)) [Z_v2]")
@@ -240,35 +240,37 @@ class qSymbOp_test(unittest.TestCase):
         s.assertEqual(str(prodop), "(6*k) [Y_1 Z_v3]")
 
     # def test_str_mult_1_2(s):
-    #   # mult one-term by 2-term
-    #   symop1 = qSymbOp.qSymbOp('k [X_1 Z_v2]')
-    #   symop2 = qSymbOp.qSymbOp('[Y_1 Z_v3] ++ 2.1 [Z_0 ad_v2]')
-    #   prodop = symop1*symop2
+    #     # mult one-term by 2-term
+    #     symop1 = qSymbOp.qSymbOp("k [X_1 Z_v2]")
+    #     symop2 = qSymbOp.qSymbOp("[Y_1 Z_v3] ++ 2.1 [Z_0 ad_v2]")
+    #     prodop = symop1 * symop2
 
-    #   s.assertEqual( str(prodop) , '(k) [X_1 Z_v2 Y_1 Z_v3]\n++ (2.1*k) [X_1 Z_v2 Z_0 ad_v2]' )
+    #     s.assertEqual(
+    #         str(prodop), "(k) [X_1 Z_v2 Y_1 Z_v3]\n++ (2.1*k) [X_1 Z_v2 Z_0 ad_v2]"
+    #     )
 
-    #   # Identity case
-    #   symop1 = qSymbOp.qSymbOp('3 []')
-    #   symop2 = qSymbOp.qSymbOp('2 [] ++ 2*k [Y_1 Z_v3]')
-    #   prodop = symop1*symop2
-    #   s.assertEqual( str(prodop) , '6 []\n++ (6*k) [Y_1 Z_v3]' )
+    #     # Identity case
+    #     symop1 = qSymbOp.qSymbOp("3 []")
+    #     symop2 = qSymbOp.qSymbOp("2 [] ++ 2*k [Y_1 Z_v3]")
+    #     prodop = symop1 * symop2
+    #     s.assertEqual(str(prodop), "6 []\n++ (6*k) [Y_1 Z_v3]")
 
     def test_str_mult_2_2(s):
         # mult two-term by 2-term
         symop1 = qSymbOp.qSymbOp("[X_0 Y_1] ++ 2 [Z_2 W_4]")
         symop2 = qSymbOp.qSymbOp("a [X_5 Y_6] ++ -b [Z_7 W_8]")
         prodop = symop1 * symop2
-        # print()
-        # print(prodop)
-        # print()
-        # print()
+
         s.assertEqual(
             str(prodop),
-            "(a) [X_0 Y_1 X_5 Y_6]\n++ (-b) [X_0 Y_1 Z_7 W_8]\n++ (2*a) [Z_2 W_4 X_5 Y_6]\n++ (-2*b) [Z_2 W_4 Z_7 W_8]",
+            """(a) [X_0 Y_1 X_5 Y_6]
+            ++ (-b) [X_0 Y_1 Z_7 W_8]
+            ++ (2*a) [Z_2 W_4 X_5 Y_6]
+            ++ (-2*b) [Z_2 W_4 Z_7 W_8]""",
         )
 
         # Multiplying by identity
-        identK = qSymbOp.qSymbOp("")
+        # identK = qSymbOp.qSymbOp("")
         # (incomplete)
 
         # Mult by the same operator
@@ -278,9 +280,12 @@ class qSymbOp_test(unittest.TestCase):
         # print(res)
         # s.assertEqual( str(res),
 
-    #   # mult 2-term by same 2-term
-    #   prodop = symop1*symop1
-    #   s.assertEqual( str(prodop) , '[X_0 Y_1 X_0 Y_1] + 4 [X_0 Y_1 Z_2 W_4] + 4 [Z_2 W_4 Z_2 W_4]' )
+        #   # mult 2-term by same 2-term
+        #   prodop = symop1*symop1
+        s.assertEqual(
+            str(prodop),
+            "[X_0 Y_1 X_0 Y_1] + 4 [X_0 Y_1 Z_2 W_4] + 4 [Z_2 W_4 Z_2 W_4]",
+        )
 
     def test_orderTerms(s):
 
@@ -338,7 +343,8 @@ class qSymbOp_test(unittest.TestCase):
         )
         s.assertEqual(res123, gold123)
 
-        # Make sure that it's not over-writing duplicates, e.g. q1q0+q0q1 should be 2*q0q1:
+        # Make sure that it's not over-writing duplicates,
+        # e.g. q1q0+q0q1 should be 2*q0q1:
         symop = qSymbOp.qSymbOp("[q_0 q_1] ++ [q_1 q_0]")
         symop.simplifyQuadExponents()
         res = str(symop)

@@ -32,10 +32,6 @@ class dlevel_tests(unittest.TestCase):
         y2 = QubitOperator("Y2")
         z2 = QubitOperator("Z2")
 
-        miscOp = np.array([[7, 0, 1 + 2j], [0, 0, 0], [3 + 4j, 0, 9]], dtype=complex)
-
-        testprec = 12
-
         ss1 = dLevelSubsystem(d=3, enc="stdbinary")
         gold = 0.25 * (x0 - 1j * y0) * (ii + z1) + 0.25 * np.sqrt(2.0) * (
             x0 + 1j * y0
@@ -70,19 +66,6 @@ class dlevel_tests(unittest.TestCase):
         s.assertEqual(res, gold)
 
         # Test locopProductToPauli
-        # The code first multiplies the matrix reps of q*q=q^2
-        # Takes resulting matrix rep, and maps that to Pauli
-        resQsq = ss1.locopProductToPauli(("qhoPos", "qhoPos"))
-        goldQsq = (
-            1.0 * sglQubOp(1, 1, 0)
-            + 3.0 * sglQubOp(1, 1, 1)
-            + 5.0 * sglQubOp(1, 1, 2)
-            + np.sqrt(2.0)
-            * (
-                sglQubOp(1, 0, 2) * sglQubOp(0, 1, 0)
-                + sglQubOp(1, 0, 0) * sglQubOp(0, 1, 2)
-            )
-        )
         s.assertEqual(res, gold)
 
         # *********
@@ -153,8 +136,6 @@ class dlevel_tests(unittest.TestCase):
         # ************************************************
         # Do it all from scratch. 2-site hubbard model
         hubb2 = compositeOperator()
-        id1 = hubb2.appendSubsystem(ss1)
-        id2 = hubb2.appendSubsystem(ss1)
         k = 0.3
         hubb2.addHamTerm(k, [(0, "qhoCr"), (1, "qhoAn")])
 
@@ -268,7 +249,8 @@ class dlevel_tests(unittest.TestCase):
         q1 = np.array([[0, 1], [1, 0.0]]) / np.sqrt(2)
         p2 = np.array([[0, -1j], [1j, 0]]) / np.sqrt(2)
         op_ss0 = functools.reduce(np.dot, (q0, p0, p0))
-        # op_ss0 = functools.reduce(np.dot, (p0,p0,q0)) # Incorrect order gives different (incorrect) result.
+        # Incorrect order gives different (incorrect) result.
+        # op_ss0 = functools.reduce(np.dot, (p0,p0,q0))
 
         gold = k * functools.reduce(np.kron, (p2, q1, op_ss0))
 

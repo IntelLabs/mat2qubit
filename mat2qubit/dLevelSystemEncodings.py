@@ -75,8 +75,9 @@ builtInOps = (
 # Pr{} -- Projector to one level
 # k{}b{} -- "ketbra", e.g. k1b2==|1><2|
 
-# IMPORTANT NOTE: The projection operators, just like any other operator, ignores the bits outside the bitmask.
-# This means that in non-compact codes, "Pr{}" does *not* really behave like a projector. Hence the 'PrX'
+# IMPORTANT NOTE: The projection operators, just like any other operator, ignores
+# the bits outside the bitmask. This means that in non-compact codes, "Pr{}"
+# does *not* really behave like a projector. Hence the 'PrX'
 # operators are used mainly in the sense of denoting a value on the bits.
 
 
@@ -106,12 +107,12 @@ class dLevelSubsystem:
         """
         s.d = d
         s.enc = enc
-        assert encParams == None or isinstance(encParams, dict)
+        assert encParams is None or isinstance(encParams, dict)
         s.encParams = deepcopy(encParams)
 
         s.qubitShift = 0
         s.nqubits = 0
-        if enc != None:
+        if enc is not None:
             s.nqubits = i2b.getBitCount(d - 1, enc, encParams)
 
         s.name = ""
@@ -132,7 +133,7 @@ class dLevelSubsystem:
         # This parses single-string encodings like "bu_gray_3" or else returns no change
         enc, encParams = i2b.processEncodingString(enc, encParams)
 
-        assert encParams == None or isinstance(encParams, dict)
+        assert encParams is None or isinstance(encParams, dict)
 
         s.enc = enc
         s.encParams = deepcopy(encParams)
@@ -149,7 +150,7 @@ class dLevelSubsystem:
         assert isinstance(d, (int, np.integer))
 
         s.d = d
-        if s.enc == None:
+        if s.enc is None:
             s.nqubits = 0
         else:
             s.nqubits = i2b.getBitCount(s.d - 1, s.enc, s.encParams)
@@ -233,9 +234,11 @@ class dLevelSubsystem:
                 lev = int(inpOp[2:])
                 return qopmats.proj(lev, s.d)
 
-                # IMPORTANT NOTE: The projection operators, just like any other operator, ignores the bits outside the bitmask.
-                # This means that in non-compact codes, "Pr{}" does *not* really behave like a projector. Hence the 'PrX'
-                # operators are used mainly in the sense of denoting a value on the bits.
+                # IMPORTANT NOTE: The projection operators, just like any other
+                # operator, ignores the bits outside the bitmask.
+                # This means that in non-compact codes, "Pr{}" does *not* really
+                # behave like a projector. Hence the 'PrX' operators are used mainly
+                # in the sense of denoting a value on the bits.
 
             elif (
                 len(re.findall(r"k\d+b\d+$", inpOp)) == 1
@@ -259,7 +262,7 @@ class dLevelSubsystem:
             inpOp (string, numpy.array): d-by-d operator
         """
 
-        if s.enc == None:
+        if s.enc is None:
             raise Exception("Encoding for subsystem not yet set.")
 
         # Return identity right away if that's correct operator
@@ -290,7 +293,7 @@ class dLevelSubsystem:
 
                 matval = inpOp[i, j]
 
-                I = i2b.int2bits(i, lmax, s.enc, s.encParams)
+                I = i2b.int2bits(i, lmax, s.enc, s.encParams)  # noqa: E741
                 J = i2b.int2bits(j, lmax, s.enc, s.encParams)
                 imask = i2b.getBitMask(i, lmax, s.enc, s.encParams)
                 jmask = i2b.getBitMask(j, lmax, s.enc, s.encParams)
@@ -302,7 +305,7 @@ class dLevelSubsystem:
 
                 # Then you only focus on the bits in that mask
                 for bitId, boolUseBit in enumerate(mask):
-                    if boolUseBit == False:
+                    if not boolUseBit:
                         continue
 
                     # Possible inputs: |0><0|,|0><1|,|1><0|,|1><1|
@@ -316,7 +319,8 @@ class dLevelSubsystem:
         """Convert list of products to Pauli operator
 
         Args:
-            locopList (iterable of 1-local d-level ops): e.g. ('q','n',np.array([[0.,-1j],[1j,0]]))
+            locopList (iterable of 1-local d-level ops): e.g.:
+                ('q','n',np.array([[0.,-1j],[1j,0]]))
 
         """
 
@@ -446,7 +450,8 @@ class compositeDLevels:
 
         if ignore_encoding:
 
-            # Loop over opString (can't assume anything. It could be e.g. 'q0 p7 p0 q2 q0')
+            # Loop over opString
+            # (can't assume anything. It could be e.g. 'q0 p7 p0 q2 q0')
             # For dict of matrices (Identities of each subsystem size)
             num_ss = len(s.subsystems)
             mats_by_ssid = dict(
@@ -541,11 +546,11 @@ class compositeOperator(compositeDLevels):
 
     def __init__(s, inpCompositeSys=None, defaultEnc=None):
 
-        assert inpCompositeSys == None or isinstance(inpCompositeSys, compositeDLevels)
+        assert inpCompositeSys is None or isinstance(inpCompositeSys, compositeDLevels)
         # isinstance(inpCompositeSys,super(compositeOperator)) )
 
         # Run the constructor of parent object. And take from inpCS.
-        if inpCompositeSys == None:
+        if inpCompositeSys is None:
             super(compositeOperator, s).__init__(defaultEnc)
         else:
             s.subsystems = deepcopy(inpCompositeSys.subsystems)
@@ -745,7 +750,8 @@ class compositeQasmBuilder:
 
     def yieldPauliOpsIncludeBreaks(s, compositeSys):
 
-        # Include breaks means that you'll stop at ENC commands (and possibly other future break-type commands)
+        # Include breaks means that you'll stop at ENC commands
+        # (and possibly other future break-type commands)
 
         pauliOp = QubitOperator.zero()  # 0.0
 

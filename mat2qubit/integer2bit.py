@@ -125,7 +125,7 @@ def getBitMask(intval, lmax, enc, params=None):
         # Number of blocks
         nBlocks = int(np.ceil((lmax + 1) / g))
         # Value of block
-        blockVal = (intval % g) + 1
+        # blockVal = (intval % g) + 1
         # What block is the val in?
         blockId = int(np.floor(intval / g))
 
@@ -197,7 +197,8 @@ def getMaxDFromNumBits(nbits, enc, params=None):
     elif enc == "blockunary":
         g = params["g"]
         blocksize = int(np.ceil(np.log2(g + 1)))
-        # assert (nbits/blocksize).is_integer(), "For now we require nbits/blocksize to be an integer, in this function."
+        # "For now we require nbits/blocksize to be an integer, in this function."
+        # assert (nbits/blocksize).is_integer()
         remainder = nbits % blocksize
         remainder = 2**remainder - 1
         return int(g * np.floor(nbits / blocksize) + remainder)
@@ -253,7 +254,8 @@ def processEncodingString(enc, encParams):
 #     return gray
 
 # # https://rosettacode.org/wiki/Gray_code#Python
-# # Content is available under GNU Free Documentation License 1.2 unless otherwise noted.
+# # Content is available under GNU Free Documentation License 1.2
+# # unless otherwise noted.
 # def stdbin2gray(bits):
 #     # Only works on unpadded strings
 #     bits = bits[:1] + [i ^ ishift for i, ishift in zip(bits[:-1], bits[1:])]

@@ -15,11 +15,17 @@ import numpy as np
 
 from . import compositeDLevels, compositeOperator, dLevelSubsystem, qopmats, qSymbOp
 
+# from mat2qubit import (
+#     compositeDLevels,
+#     compositeOperator,
+#     dLevelSubsystem,
+#     qopmats,
+#     qSymbOp,
+# )
+
+
 # from . import qSymbOp as qSymbOp_module
 # qSymbOp = qSymbOp_module.qSymbOp
-
-# from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator, qopmats,qSymbOp
-
 
 
 # Built-in operators. These match with the mat2qubit library.
@@ -58,7 +64,8 @@ operatorChars.update(ketbra_dict)
 def symbop_to_dlevcompositeop(inpSymbop, ssname_order, dvals, encodings, inpOpChars={}):
     """Convert qSymbOp to mat2qubit operator.
 
-    dvals and encodings may be single value, iterable, or dict (with subsystems as keys).
+    dvals and encodings may be single value, iterable,
+    or dict (with subsystems as keys).
 
     The input dict of opchars_to_func allows for strings, function defs, and np.array
     """

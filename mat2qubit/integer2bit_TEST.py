@@ -308,7 +308,9 @@ class i2b_tests(unittest.TestCase):
         # unary
         g = 3
         lmax = 11
-        # s.assertEqual( i2b.dec2blockunary(7,lmax,g,locEncFunc), [0, 0, 0, 0, 1, 1, 0, 0] )
+        # s.assertEqual(
+        #     i2b.dec2blockunary(7, lmax, g, locEncFunc), [0, 0, 0, 0, 1, 1, 0, 0]
+        # )
         s.assertEqual(
             i2b.int2bits(
                 7, lmax, "blockunary", {"g": g, "localEncodingFunc": i2b.dec2gray}

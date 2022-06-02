@@ -21,7 +21,7 @@ class helperDLev_tests(unittest.TestCase):
 
     def test_pauli_op_to_matrix(s):
 
-        I = qopmats.qub["I2"]
+        I = qopmats.qub["I2"]  # noqa: E741
         X = qopmats.qub["X"]
         Y = qopmats.qub["Y"]
         Z = qopmats.qub["Z"]

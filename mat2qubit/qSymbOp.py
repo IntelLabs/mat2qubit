@@ -217,10 +217,12 @@ class qSymbOp(object):
               'Qsq','Psq'}. Outputs in terms of {'q{}' & 'p{}'}
 
         Remember that, on same particle, we assume that *nothing* commutes.
-        i.e., p and q don't commute, but they also don't commute with any other ops on the same particle.
+        i.e., p and q don't commute, but they also don't commute with any other ops
+        on the same particle.
 
-        At the moment, only works when diffSsidsCommute=True. The order *within* a given ssid is preserved,
-        since commutation can no be assumed within a given index.
+        At the moment, only works when diffSsidsCommute=True. The order *within*
+        a given ssid is preserved, since commutation can no be assumed within
+        a given index.
 
         Args:
             inpOp (qSymbOp) - Input Operator
@@ -232,7 +234,6 @@ class qSymbOp(object):
 
         q_ops = ["qhoPos", "Qsq", "q", "q2", "q3", "q4", "q5", "q6"]
         p_ops = ["qhoMom", "Psq", "p", "p2"]
-        quadOps = q_ops + p_ops
 
         # New dict for operator, to override original in the end
         simplified_op = {}

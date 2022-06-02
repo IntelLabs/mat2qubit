@@ -7,12 +7,6 @@
 
 from __future__ import absolute_import
 
-from . import dLevelSystemEncodings
-
-dLevelSubsystem = dLevelSystemEncodings.dLevelSubsystem
-compositeDLevels = dLevelSystemEncodings.compositeDLevels
-compositeOperator = dLevelSystemEncodings.compositeOperator
-compositeQasmBuilder = dLevelSystemEncodings.compositeQasmBuilder
 import copy
 import functools
 import itertools
@@ -31,21 +25,26 @@ from openfermion import (
     qubit_operator_sparse,
 )
 
+from . import dLevelSystemEncodings
 from . import integer2bit as i2b
 from . import qopmats
 
+dLevelSubsystem = dLevelSystemEncodings.dLevelSubsystem
+compositeDLevels = dLevelSystemEncodings.compositeDLevels
+compositeOperator = dLevelSystemEncodings.compositeOperator
+compositeQasmBuilder = dLevelSystemEncodings.compositeQasmBuilder
+
 # from . import dLevelSubsystem,compositeDLevels,compositeOperator,compositeQasmBuilder
 
-# from mat2qubit import dLevelSubsystem,compositeDLevels,compositeOperator,compositeQasmBuilder
+# from mat2qubit import (
+#     compositeDLevels,
+#     compositeOperator,
+#     compositeQasmBuilder,
+#     dLevelSubsystem,
+# )
+
 # from mat2qubit import integer2bit as i2b
 # from mat2qubit import qopmats
-
-
-
-
-
-
-
 
 
 EQ_TOLERANCE = 1e-12
@@ -72,7 +71,8 @@ def integerstring_to_bitstring(intstring, sysdlev):
 
     Args:
         intstring: iterable of integers, e.g. (0,3,1,1)
-        sysdlev: object containing encoding and d info (compositeDLevels or compositeOperator)
+        sysdlev: object containing encoding and d info
+            (compositeDLevels or compositeOperator)
 
     Returns: tuple of 0 & 1
     """
@@ -102,7 +102,8 @@ def integerstring_to_state_id(intstring, sysdlev):
 
     Args:
         intstring: iterable of integers, e.g. (0,3,1,1)
-        sysdlev: object containing encoding and d info (compositeDLevels or compositeOperator)
+        sysdlev: object containing encoding and d info
+            (compositeDLevels or compositeOperator)
 
     Returns: tuple of 0 & 1
     """

@@ -23,17 +23,19 @@ import utilsDLev
 from dLevelSystemEncodings import compositeDLevels, compositeOperator, dLevelSubsystem
 from helperDLev import sglQubOp
 
-# from mat2qubit.dLevelSystemEncodings import dLevelSubsystem,compositeDLevels,compositeOperator#,compositeQasmBuilder
+# from mat2qubit.dLevelSystemEncodings import (
+#     compositeDLevels,
+#     compositeOperator,
+#     compositeQasmBuilder,
+#     dLevelSubsystem,
+# )
+
 # import mat2qubit.utilsDLev as utilsDLev
 # from mat2qubit.helperDLev import sglQubOp#, trotterQubop2qasm
 # import mat2qubit.qopmats as qopmats
 
 
-
-
 # import basic_qcircuit as bqc
-
-
 
 
 class dlevelutils_tests(unittest.TestCase):
@@ -157,7 +159,8 @@ class dlevelutils_tests(unittest.TestCase):
 
     def test_intstrings_to_state(s):
 
-        # Test simple of |0>+|1>+|2>. More complex cases are tested in test_permutations anyway.
+        # Test simple of |0>+|1>+|2>. More complex cases are tested
+        # in test_permutations anyway.
 
         int_strings = (
             (0,),
@@ -319,7 +322,7 @@ BREAK
         # stringStream1.write(filecontents1)
 
         # Parse "file" to get composite operator object
-        composDOp = utilsDLev.parseBraket(stringStream1)
+        # composDOp = utilsDLev.parseBraket(stringStream1)
 
         manualComposDOp = compositeOperator()
         manualComposDOp.appendSubsystem(dLevelSubsystem(d))
@@ -347,29 +350,30 @@ BREAK
         for action in qasmBuilder.circCommands:
             print(action)
 
-        filecontents2 = """NUMREGISTERS 2
-REGSIZES 2,2
-5.60216 |0:0><0:0|
-5.60216 |0:0,1:0><0:0,1:0|
-11.2043 |0:0,1:0><0:0,1:0|
-BREAK
-1.19186 |1:1><1:1|
-1.19186 |0:1,1:1><0:1,1:1|
-2.38371 |0:1,1:1><0:1,1:1|
-BREAK
-1.11072 |0:1,1:1><0:0,1:1|
-1.11072 |0:0,1:1><0:0,1:0|
-1.11072 |0:0,1:0><0:0,1:1|
-1.11072 |0:0,1:1><0:1,1:1|
-BREAK
-2.50076 |0:0><0:0|
-2.50076 |0:0,1:0><0:0,1:0|
-5.00152 |0:0,1:0><0:0,1:0|
-BREAK
-4.67163 |1:1><1:1|
-4.67163 |0:1,1:1><0:1,1:1|
-9.34325 |0:1,1:1><0:1,1:1|
-"""
+
+#         filecontents2 = """NUMREGISTERS 2
+# REGSIZES 2,2
+# 5.60216 |0:0><0:0|
+# 5.60216 |0:0,1:0><0:0,1:0|
+# 11.2043 |0:0,1:0><0:0,1:0|
+# BREAK
+# 1.19186 |1:1><1:1|
+# 1.19186 |0:1,1:1><0:1,1:1|
+# 2.38371 |0:1,1:1><0:1,1:1|
+# BREAK
+# 1.11072 |0:1,1:1><0:0,1:1|
+# 1.11072 |0:0,1:1><0:0,1:0|
+# 1.11072 |0:0,1:0><0:0,1:1|
+# 1.11072 |0:0,1:1><0:1,1:1|
+# BREAK
+# 2.50076 |0:0><0:0|
+# 2.50076 |0:0,1:0><0:0,1:0|
+# 5.00152 |0:0,1:0><0:0,1:0|
+# BREAK
+# 4.67163 |1:1><1:1|
+# 4.67163 |0:1,1:1><0:1,1:1|
+# 9.34325 |0:1,1:1><0:1,1:1|
+# """
 
 
 if __name__ == "__main__":

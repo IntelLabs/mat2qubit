@@ -11,7 +11,7 @@ import operator
 import random
 
 import numpy as np
-from openfermion import QubitOperator, count_qubits, qubit_operator_sparse
+from openfermion import QubitOperator, count_qubits, is_hermitian, qubit_operator_sparse
 
 EQ_TOLERANCE = 1e-12
 
@@ -36,7 +36,8 @@ def sglQubOp(i, j, qubid):
 
 
 def pauli_op_to_matrix(pop, n_qubits=None, m2q_ordering=True):
-    """Takes in Pauli operator [QubitOperator] and outputs matrix based on mat2qubit's ordering.
+    """Takes in Pauli operator [QubitOperator] and outputs matrix based on
+        mat2qubit's ordering.
 
     Note: default mat2qubit's ordering is the reverse of what some orderings use.
 

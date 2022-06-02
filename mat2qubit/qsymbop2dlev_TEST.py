@@ -22,7 +22,6 @@ from qsymbop2dlev import symbop_pauli_to_mat, symbop_to_dlevcompositeop
 # from mat2qubit import qopmats
 
 
-
 class symb2qubit_test(unittest.TestCase):
     def setUp(s):
         s.globalop1 = qSymbOp.qSymbOp("1 [q_1 p_v2]")
@@ -34,7 +33,7 @@ class symb2qubit_test(unittest.TestCase):
         s.X = qopmats.qub["X"]
         s.Y = qopmats.qub["Y"]
         s.Z = qopmats.qub["Z"]
-        s.I = qopmats.qub["I2"]
+        s.I = qopmats.qub["I2"]  # noqa: E741
 
     def test_conversion(s):
 
@@ -46,9 +45,6 @@ class symb2qubit_test(unittest.TestCase):
         # ssid_to_d = ['1':2,'v2':4,'v3':4]
         ssid_to_d = dict(zip(ssid_order, [2, 4, 4]))
         ssid_to_enc = dict(zip(ssid_order, ["stdbinary", "unary", "unary"]))
-
-        opchars_to_op = {}  # Should let it be other string, op, or np.array. There are
-        # built-in functions, so this one will be optional.
 
         # symb_scalars = {} # The scalars to convert. This should be done *beforehand*.
         # # Hence shouldn't be testing this in this module.
@@ -121,13 +117,15 @@ class symb2qubit_test(unittest.TestCase):
 
     # def test_identity(s):
 
-    #   ident = qSymbOp.qSymbOp('-7 []')
-    #   op_with_ident = qSymbOp.qSymbOp('-kk [q_1 p_v2] ++ 7 []')
-    #   ssid_order = ['1','v2']
-    #   ssid_to_d = dict(zip(ssid_order,[2,4,4]))
-    #   ssid_to_enc = dict(zip(ssid_order,['stdbinary','unary','unary']))
+    #     ident = qSymbOp.qSymbOp("-7 []")
+    #     op_with_ident = qSymbOp.qSymbOp("-kk [q_1 p_v2] ++ 7 []")
+    #     ssid_order = ["1", "v2"]
+    #     ssid_to_d = dict(zip(ssid_order, [2, 4, 4]))
+    #     ssid_to_enc = dict(zip(ssid_order, ["stdbinary", "unary", "unary"]))
 
-    #   dlevCompOp = symbop_to_dlevcompositeop(s.globalop1, ssid_order,ssid_to_d,ssid_to_enc)
+    #     dlevCompOp = symbop_to_dlevcompositeop(
+    #         s.globalop1, ssid_order, ssid_to_d, ssid_to_enc
+    #     )
 
     def test_symbop_pauli_to_mat(s):
 
