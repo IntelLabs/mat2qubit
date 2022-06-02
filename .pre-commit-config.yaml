@@ -1,0 +1,25 @@
+# See https://pre-commit.com for more information
+
+default_language_version:
+  python: python3.7
+
+default_stages: [commit, push]
+
+repos:
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--check"]
+
+  - repo: https://github.com/ambv/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        args: ["--check"]
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        args: ["--ignore=E203,E266,F401,W503", "--max-line-length=88"]
