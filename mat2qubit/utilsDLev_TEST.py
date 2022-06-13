@@ -24,16 +24,13 @@ import functools
 
 from io import StringIO
 
-# import basic_qcircuit as bqc
 
 
 import numpy as np
 import scipy.linalg as la
 import scipy.sparse as spr
-from ns_primitives import krx,dotx
 
-
-
+from functools import reduce
 
 
 class dlevelutils_tests(unittest.TestCase):
@@ -363,11 +360,10 @@ BREAK
         manualComposDOp.addHamTerm( 1.1 , [(0,op_01),(1,op_10)] )
 
         # Gold matrix op
-        goldMatOp =  5.6*krx( np.array([[1,0],[0,0]],dtype=complex) , np.eye(d) )
-        goldMatOp += 5.6*krx( np.array([[0,0],[0,1]]) , np.array([[1,0],[0,0]]) )
-        goldMatOp += 1.1*krx( np.array([[0,0],[1,0]]) , np.array([[0,1],[0,0]]) )
-        goldMatOp += 1.1*krx( np.array([[0,1],[0,0]]) , np.array([[0,0],[1,0]]) )
-
+        goldMatOp =  5.6*np.kron( np.array([[1,0],[0,0]],dtype=complex) , np.eye(d) )
+        goldMatOp += 5.6*np.kron( np.array([[0,0],[0,1]]) , np.array([[1,0],[0,0]]) )
+        goldMatOp += 1.1*np.kron( np.array([[0,0],[1,0]]) , np.array([[0,1],[0,0]]) )
+        goldMatOp += 1.1*np.kron( np.array([[0,1],[0,0]]) , np.array([[0,0],[1,0]]) )
 
 
 
