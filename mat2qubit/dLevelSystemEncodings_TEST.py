@@ -77,7 +77,7 @@ class dlevel_tests(unittest.TestCase):
         # The code first multiplies the matrix reps of q*q=q^2
         # Takes resulting matrix rep, and maps that to Pauli
         resQsq  = ss1.locopProductToPauli( ("qhoPos","qhoPos") )
-        goldQsq = 1.*sglQubOp(1,1,  0) + 3.*sglQubOp(1,1,  1) + 5.*sglQubOp(1,1,  2) + \
+        goldQsq = 0.5* ( 1.*sglQubOp(1,1,  0) + 3.*sglQubOp(1,1,  1) + 2.*sglQubOp(1,1,  2) + \
             np.sqrt(2.) * ( sglQubOp(1,0, 2)*sglQubOp(0,1, 0) + sglQubOp(1,0, 0)*sglQubOp(0,1, 2)  )  )
         s.assertEqual( resQsq, goldQsq )
 
