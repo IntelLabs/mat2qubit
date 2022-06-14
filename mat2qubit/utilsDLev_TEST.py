@@ -35,7 +35,6 @@ from helperDLev import sglQubOp
 # import mat2qubit.qopmats as qopmats
 
 
-# import basic_qcircuit as bqc
 
 
 class dlevelutils_tests(unittest.TestCase):
