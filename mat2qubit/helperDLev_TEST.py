@@ -3,27 +3,28 @@
 
 # Test helperDLev.py
 
-import unittest
-# from mat2qubit import qopmats
-import qopmats
-from openfermion import QubitOperator
 import functools
+import unittest
+
 import numpy as np
+from openfermion import QubitOperator
 
 import helperDLev
 
-class helperDLev_tests(unittest.TestCase):
+# from mat2qubit import qopmats
+import qopmats
 
+
+class helperDLev_tests(unittest.TestCase):
     def setup(self):
         pass
 
     def test_pauli_op_to_matrix(s):
 
-        I = qopmats.qub['I2']
-        X = qopmats.qub['X']
-        Y = qopmats.qub['Y']
-        Z = qopmats.qub['Z']
-
+        I = qopmats.qub["I2"]  # noqa: E741
+        X = qopmats.qub["X"]
+        Y = qopmats.qub["Y"]
+        Z = qopmats.qub["Z"]
 
         # # Zero
         # pop = QubitOperator('')
@@ -45,20 +46,19 @@ class helperDLev_tests(unittest.TestCase):
         # nq = 3
 
         # Multi
-        pop = QubitOperator('0.25 [X0 Z1] + 0.5 [Y1 Z2] + 0.125 []')
+        pop = QubitOperator("0.25 [X0 Z1] + 0.5 [Y1 Z2] + 0.125 []")
         nq = 4
-        gold = .25  * functools.reduce(np.kron, (I,I,Z,X) ) \
-             + .5   * functools.reduce(np.kron, (I,Z,Y,I) ) \
-             + .125 * functools.reduce(np.kron, (I,I,I,I) )
-        res = helperDLev.pauli_op_to_matrix( pop , nq ).todense()
+        gold = (
+            0.25 * functools.reduce(np.kron, (I, I, Z, X))
+            + 0.5 * functools.reduce(np.kron, (I, Z, Y, I))
+            + 0.125 * functools.reduce(np.kron, (I, I, I, I))
+        )
+        res = helperDLev.pauli_op_to_matrix(pop, nq).todense()
         print(gold.shape)
         print(res.shape)
         # np.testing.assert_array_equal(gold,res)
-        s.assertEqual(gold.tolist(),res.tolist())
+        s.assertEqual(gold.tolist(), res.tolist())
 
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     unittest.main()
-
-

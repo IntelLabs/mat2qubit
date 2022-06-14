@@ -1,15 +1,15 @@
 # Copyright (C) 2020-2022 Intel Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-'''qSymbOp is a parent class for symbolic operations in quantum mechanics'''
+"""qSymbOp is a parent class for symbolic operations in quantum mechanics"""
+
+import re
+from copy import copy, deepcopy
 
 import numpy as np
-import re
 import sympy
 
-from copy import copy,deepcopy
-
-'''
+"""
 Notes:
 
 Purpose of this code is to be able to have *both* coefficients and subspaces
@@ -18,8 +18,7 @@ be symbolic.
 Another main purpose is that it is useful for mixed types of DOF.
 
 Between terms you are *required* to use '++'
-'''
-
+"""
 
 
 class qSymbOpError(Exception):
@@ -31,8 +30,7 @@ symbScalarFromStr = sympy.sympify
 
 
 def is_symbolic(symbScalar):
-    '''Returns true of scalar is symbolic.
-    '''
+    """Returns true of scalar is symbolic."""
 
     try:
         complex(symbScalar)
@@ -43,12 +41,12 @@ def is_symbolic(symbScalar):
 
 
 class qSymbOp(object):
-    '''Parent class for symbolic quantum operators.
-    '''
-
+    """Parent class for symbolic quantum operators."""
 
     addOpsOnTheFly = True
-    addSubSystemsOnTheFly = True  # If false, SS's have to be added explicitly beforehand
+    addSubSystemsOnTheFly = (
+        True  # If false, SS's have to be added explicitly beforehand
+    )
     # useOnlyBuiltInSSOps = False
 
     # builtInSSOps = ()  # Should not be changed by class nor children
@@ -59,13 +57,11 @@ class qSymbOp(object):
     # Assumption is that nothing commutes, not even between subspaces
     diffSsidsCommute = True  # False for e.g. fermions, True for e.g. bosons
     # locProductsCommute = False  # Rarely if even set to truewould be set to true
-    
+
     # Local products for non-commuting mats, e.g. X0*Y0=-jZ0
     localProducts = {}
 
-
-
-    def __init__(s,inpText=None,mult=None):
+    def __init__(s, inpText=None, mult=None):
 
         # Dict of ordered tuples of pairs
         s.fullOperator = {}
@@ -73,72 +69,66 @@ class qSymbOp(object):
         # Set of ssid's. ssid is a string.
         s.ssid_set = set()
 
-
         if inpText:  # (the operator equals zero if inpText=None)
-            
-            s.parseFullOpStr(inpText,mult)
+
+            s.parseFullOpStr(inpText, mult)
 
         else:
             # Operator equals zero in this case
             pass
 
-
-    def parseFullOpStr(s,inpText,mult):
-        '''Parse operator string, such as '[X_1 Z_v2] ++ 2*k [Y_1 Z_v3]'
-        '''
+    def parseFullOpStr(s, inpText, mult):
+        """Parse operator string, such as '[X_1 Z_v2] ++ 2*k [Y_1 Z_v3]'"""
 
         # If no brackets in string, it should just be ''
 
-        strOpTerms = [ elem.strip() for elem in inpText.split('++') ]
+        strOpTerms = [elem.strip() for elem in inpText.split("++")]
 
         for strOpTerm in strOpTerms:
-            
+
             # If string started with '++', then first elem will be empty
-            if strOpTerm=="":
+            if strOpTerm == "":
                 continue
 
             # Take coeff and opstr
-            k_opstr = [ x.strip() for x in strOpTerm.split('[') ]
-            assert len(k_opstr)==2
-            k_opstr[1] = k_opstr[1][:-1] # Remove the ']'
+            k_opstr = [x.strip() for x in strOpTerm.split("[")]
+            assert len(k_opstr) == 2
+            k_opstr[1] = k_opstr[1][:-1]  # Remove the ']'
 
             # Get the tuple key for the opStr
             opStringKey = s.parseOpStringStr(k_opstr[1])
 
             # Parse the coefficient
             coeff = k_opstr[0]
-            if coeff=='':
+            if coeff == "":
                 coeff = 1
             if s.symbolicCoefficients:
                 coeff = symbScalarFromStr(coeff)
             else:
-                assert coeff.isnumeric()   # DOESN'T HANDLE COMPLEX NUMBERS
+                assert coeff.isnumeric()  # DOESN'T HANDLE COMPLEX NUMBERS
                 coeff = float(coeff)
 
-            s.addSingleOpStringTerm(opStringKey,coeff)
+            s.addSingleOpStringTerm(opStringKey, coeff)
 
-
-    def addSingleOpStringTerm(s,opstring,k):
-        '''Add single operator string term to current object.
-        '''
+    def addSingleOpStringTerm(s, opstring, k):
+        """Add single operator string term to current object."""
 
         # Add into full operator
         if opstring in s.fullOperator.keys():
             # Key already in dict
             s.fullOperator[opstring] += k
             # Remove if now zero
-            if s.fullOperator[opstring]==0.:
+            if s.fullOperator[opstring] == 0.0:
                 del s.fullOperator[opstring]
         else:
             # Key not already in dict
             s.fullOperator[opstring] = k
 
+    def parseOpStringStr(s, inpstr):
+        """Returns a tuple of pairs (each pair is a tuple)
 
-    def parseOpStringStr(s,inpstr):
-        '''Returns a tuple of pairs (each pair is a tuple)
-        
         Example: ( ('1','X'), ('v2','Z'), )
-        '''
+        """
 
         opStringTuple = ()
 
@@ -147,8 +137,8 @@ class qSymbOp(object):
         for locop in locop_arr:
 
             # Operator and subsystem
-            op_ss = locop.split('_')
-            assert len(op_ss)==2
+            op_ss = locop.split("_")
+            assert len(op_ss) == 2
             op = op_ss[0]
             ssid = op_ss[1]
 
@@ -156,27 +146,21 @@ class qSymbOp(object):
             s.ssid_set.add(ssid)
 
             # Add this ssid-op pair to the opstring tuple
-            opStringTuple += ((ssid,op),)
-
+            opStringTuple += ((ssid, op),)
 
         opStringKey = opStringTuple
 
         # Case of identity
-        if len(locop_arr)==0:
+        if len(locop_arr) == 0:
             opStringKey = ((),)
 
         # This is a tuple
         return opStringKey
 
+    def getCoeff(s, opString):
+        """Get coefficient (scalar) before some opString"""
 
-
-
-
-    def getCoeff(s,opString):
-        '''Get coefficient (scalar) before some opString
-        '''
-        
-        if isinstance(opString,str):
+        if isinstance(opString, str):
             opStringKey = s.parseOpStringStr(opString)
         else:
             assert s.isValidOpTuple(opString)
@@ -187,61 +171,58 @@ class qSymbOp(object):
         else:
             raise IndexError("Operator string not a term in full operator.")
 
-
-
-    def multTwoOpStrings(s,opString1,opString2):
-        '''Multiply two operator strings.
+    def multTwoOpStrings(s, opString1, opString2):
+        """Multiply two operator strings.
 
         When commutation relations etc are added, this will become more complex;
         But for now, you're just concatenating two lists
         without any simplification.
-        '''
+        """
 
         return opString1 + opString2
 
-
-    def isValidOpTuple(s,opTuple):
-        '''Return true if it is a valid operator tuple.'''
-        if np.array(opTuple).shape[1]==2:
+    def isValidOpTuple(s, opTuple):
+        """Return true if it is a valid operator tuple."""
+        if np.array(opTuple).shape[1] == 2:
             return True
-            
+
         return False
-        
+
         # Should probably add more, like checking ssid's if setting is set to strict
 
-
-    def addSsid(s,ssid):
-        '''
+    def addSsid(s, ssid):
+        """
         Manually add ssid. This might be used when you have more subsystems,
         but they don't appear in the expression.
-        '''
-        
+        """
+
         # No effect if ssid already there
         s.ssid_set.add(ssid)
-    
-    def orderTerms(s):
-        '''
-        Orders terms based on keys.
-        '''
-        
-        s.fullOperator = dict( sorted(s.fullOperator.items()) )
 
+    def orderTerms(s):
+        """
+        Orders terms based on keys.
+        """
+
+        s.fullOperator = dict(sorted(s.fullOperator.items()))
 
     def simplifyQuadExponents(s):
         """
         Combine quad/bosonic exponents, e.g. [q2_1 q_0 q_1 q_0] --> [q3_1 q2_0]
         In above expression, q2==q squared; q3==q cubed.
-        
+
         Operators inside ops_to_ignore are excluded.
         Effectively assumes bosonic commutation.
         Considers the following operator names: {'q','p','q{}','p{}','qhoPos','qhoMom',
               'Qsq','Psq'}. Outputs in terms of {'q{}' & 'p{}'}
-        
+
         Remember that, on same particle, we assume that *nothing* commutes.
-        i.e., p and q don't commute, but they also don't commute with any other ops on the same particle.
-        
-        At the moment, only works when diffSsidsCommute=True. The order *within* a given ssid is preserved,
-        since commutation can no be assumed within a given index.
+        i.e., p and q don't commute, but they also don't commute with any other ops
+        on the same particle.
+
+        At the moment, only works when diffSsidsCommute=True. The order *within*
+        a given ssid is preserved, since commutation can no be assumed within
+        a given index.
 
         Args:
             inpOp (qSymbOp) - Input Operator
@@ -251,22 +232,17 @@ class qSymbOp(object):
         if not s.diffSsidsCommute:
             raise Exception("This function implemented only for diffSsidsCommute=True.")
 
-
-        q_ops = ['qhoPos','Qsq','q','q2','q3','q4','q5','q6']
-        p_ops = ['qhoMom','Psq','p','p2']
-        quadOps = q_ops + p_ops
-
+        q_ops = ["qhoPos", "Qsq", "q", "q2", "q3", "q4", "q5", "q6"]
+        p_ops = ["qhoMom", "Psq", "p", "p2"]
 
         # New dict for operator, to override original in the end
         simplified_op = {}
 
-        
         # ( ('1','X'), ('v2','Z'), )
 
-
         # Loop through each opstring
-        for opstring,coeff in s.fullOperator.items():
-        # s.fullOperator[opstring] = k
+        for opstring, coeff in s.fullOperator.items():
+            # s.fullOperator[opstring] = k
 
             # Within each opstring:
             # create dict of all the ssid's. dict of lists.
@@ -276,47 +252,55 @@ class qSymbOp(object):
             # Since diffSsidsCommute=True, order outside of a given ssid doesn't matter
             newopstring_dict = dict.fromkeys(sorted(s.ssid_set))
             for ssid in newopstring_dict:
-                newopstring_dict[ssid] = ['']
+                newopstring_dict[ssid] = [""]
 
             # Identity
-            if opstring==((),):
+            if opstring == ((),):
                 simplified_op[opstring] = coeff
                 continue
 
-
             for locop in opstring:
                 ssid = locop[0]
-                op   = locop[1]
-                if op=='qhoPos': op = 'q'
-                if op=='Qsq': op = 'q2'
-                if op=='qhoMom': op = 'p'
-                if op=='Psq': op = 'p2'
+                op = locop[1]
+                if op == "qhoPos":
+                    op = "q"
+                if op == "Qsq":
+                    op = "q2"
+                if op == "qhoMom":
+                    op = "p"
+                if op == "Psq":
+                    op = "p2"
 
-                if   (op in q_ops) and (newopstring_dict[ssid][-1] in q_ops):
-                    pow_a = 1 if newopstring_dict[ssid][-1]=='q' else int(newopstring_dict[ssid][-1][1:])
-                    pow_b = 1 if op=='q' else int(op[1:])
-                    newopstring_dict[ssid][-1] = 'q'+str(pow_a+pow_b)
-
+                if (op in q_ops) and (newopstring_dict[ssid][-1] in q_ops):
+                    pow_a = (
+                        1
+                        if newopstring_dict[ssid][-1] == "q"
+                        else int(newopstring_dict[ssid][-1][1:])
+                    )
+                    pow_b = 1 if op == "q" else int(op[1:])
+                    newopstring_dict[ssid][-1] = "q" + str(pow_a + pow_b)
 
                 elif (op in p_ops) and (newopstring_dict[ssid][-1] in p_ops):
-                    pow_a = 1 if newopstring_dict[ssid][-1]=='p' else int(newopstring_dict[ssid][-1][1:])
-                    pow_b = 1 if op=='p' else int(op[1:])
-                    newopstring_dict[ssid][-1] = 'p'+str(pow_a+pow_b)
+                    pow_a = (
+                        1
+                        if newopstring_dict[ssid][-1] == "p"
+                        else int(newopstring_dict[ssid][-1][1:])
+                    )
+                    pow_b = 1 if op == "p" else int(op[1:])
+                    newopstring_dict[ssid][-1] = "p" + str(pow_a + pow_b)
 
                 else:
                     newopstring_dict[ssid].append(op)
-
 
             # Re-combine and put in simplified_op
             new_opstring = []
             for ssid in newopstring_dict:
                 # Taking off first entry cuz it's just a blank ''
-                new_opstring += [ (ssid,locop) for locop in newopstring_dict[ssid][1:] ]
+                new_opstring += [(ssid, locop) for locop in newopstring_dict[ssid][1:]]
             if tuple(new_opstring) in simplified_op.keys():
                 simplified_op[tuple(new_opstring)] += coeff
             else:
                 simplified_op[tuple(new_opstring)] = coeff
-
 
         # Replace original
         s.fullOperator = simplified_op
@@ -324,79 +308,67 @@ class qSymbOp(object):
         # Return
         return
 
-
-
     def getSsids(s):
-        '''Get subsystem id's.'''
+        """Get subsystem id's."""
         return copy(s.ssid_set)
 
-    def getOpstringsContainingLocalOp(s,localOp):
-        '''
+    def getOpstringsContainingLocalOp(s, localOp):
+        """
         Should be able to enter it as string 'X_0' or 'X_0 Y_0' or a list of tuples
 
         Isn't this function kind of pointless? What would it ever be used for
-        '''
+        """
         pass
 
-    def scalar_subs(s,subsDict):
-        '''Substitute symbolic coefficients with numerical values.
-        '''
+    def scalar_subs(s, subsDict):
+        """Substitute symbolic coefficients with numerical values."""
 
-        for opTuple,k in s.fullOperator.items():
+        for opTuple, k in s.fullOperator.items():
 
             s.fullOperator[opTuple] = k.subs(subsDict)
 
-
-
     def get_latex_string(s):
-        '''Not yet implemented.'''
+        """Not yet implemented."""
 
         # This is good, because the ssid's can be subscripts
         pass
-
-
-
 
     def __str__(s):
         """
         Returns printable output text string
         """
-        
+
         outputList = []
 
-        for opTuple,k in s.fullOperator.items():
+        for opTuple, k in s.fullOperator.items():
 
             if is_symbolic(k):
                 k_str = "({})".format(str(k))
             else:
                 # k_str = "({})".format( str(float(k)) )
-                k_str = "({})".format( str(complex(k)) )
+                k_str = "({})".format(str(complex(k)))
 
-            if opTuple==((),):
+            if opTuple == ((),):
                 line = k_str + " []"
             else:
                 line = k_str + " ["
-                line += ' '.join( [ "{}_{}".format(pair[1],pair[0]) for pair in opTuple ] )
+                line += " ".join(["{}_{}".format(pair[1], pair[0]) for pair in opTuple])
                 line += "]"
 
             outputList.append(line)
 
-        return '\n++ '.join(outputList)
-
+        return "\n++ ".join(outputList)
 
     def __neg__(s):
 
         newop = deepcopy(s)
 
         for opKey in newop.fullOperator.keys():
-            newop.fullOperator[opKey] = - newop.fullOperator[opKey]
+            newop.fullOperator[opKey] = -newop.fullOperator[opKey]
 
         return newop
 
-
-
     def __add__(s, inp):
-        
 
         # Create new object
         newOp = qSymbOp()
@@ -406,35 +378,29 @@ class qSymbOp(object):
         for inpOpKey in inp.fullOperator.keys():
 
             coeff = inp.fullOperator[inpOpKey]
-            newOp.addSingleOpStringTerm(inpOpKey,coeff)
-
+            newOp.addSingleOpStringTerm(inpOpKey, coeff)
 
         # Combine the sets
         newOp.ssid_set = s.ssid_set.union(inp.ssid_set)
 
-
-        # Will need to check that properties of both match, like 
+        # Will need to check that properties of both match, like
         # the commuting properties.
 
         # Return
         return newOp
 
+    def __rmul__(s, inp):
 
-
-    def __rmul__(s,inp):
-
-        return s*inp
-
+        return s * inp
 
     def __mul__(s, inp):
 
         # First, case where inp is a scalar (including sympy val)
-        if isinstance(inp,(int,float,complex,sympy.Basic)):
+        if isinstance(inp, (int, float, complex, sympy.Basic)):
             newOp = deepcopy(s)
             for key in newOp.fullOperator.keys():
                 newOp.fullOperator[key] *= inp
             return newOp
-
 
         # Otherwise, both assumed to be qSymbOp's:
         # Create new object
@@ -444,27 +410,21 @@ class qSymbOp(object):
         # Combine the ss sets
         newOp.ssid_set = s.ssid_set.union(inp.ssid_set)
 
-
         # Loop over 's' operator
-        for key_1,k_1 in s.fullOperator.items():
+        for key_1, k_1 in s.fullOperator.items():
 
             # Loop over 'inp' operator
-            for key_2,k_2 in inp.fullOperator.items():
+            for key_2, k_2 in inp.fullOperator.items():
 
                 # Handle identity:
-                if key_1==((),):
+                if key_1 == ((),):
                     newkey = key_2
-                elif key_2==((),):
+                elif key_2 == ((),):
                     newkey = key_1
                 else:
-                    newkey = s.multTwoOpStrings(key_1,key_2)
+                    newkey = s.multTwoOpStrings(key_1, key_2)
 
-                newOp.addSingleOpStringTerm(newkey, k_1*k_2 )
-
+                newOp.addSingleOpStringTerm(newkey, k_1 * k_2)
 
         # Return
         return newOp
-
-
-
-

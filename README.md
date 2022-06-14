@@ -25,10 +25,22 @@ Contact: nicolas.sawaya@intel.com
 
 We recommend one of two installation options:
 
-#### Option 1
+### Option 1
 `python setup.py bdist_wheel`  
 `pip install dist/*.whl`
 
-#### Option 2
+### Option 2
 In your `.bash_profile` include the path to the `mat2qubit` directory in `PATH` and `PYTHONPATH`.
+
+## Contributing
+
+If you'd like to contribute, please install with dev dependencies:
+
+`python -m pip install '.[dev]'`
+
+To ease the pain of keeping the code style, you can use [pre-commit](https://pre-commit.com), with the provided `.pre-commit-config.yaml` file.
+
+In order to run tests please run:
+
+`python -m unittest *_TEST.py`
 
