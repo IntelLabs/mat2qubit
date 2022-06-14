@@ -66,7 +66,12 @@ class dlevel_tests(unittest.TestCase):
         s.assertEqual(res, gold)
 
         # Test locopProductToPauli
-        s.assertEqual(res, gold)
+        # The code first multiplies the matrix reps of q*q=q^2
+        # Takes resulting matrix rep, and maps that to Pauli
+        resQsq  = ss1.locopProductToPauli( ("qhoPos","qhoPos") )
+        goldQsq = 0.5* ( 1.*sglQubOp(1,1,  0) + 3.*sglQubOp(1,1,  1) + 2.*sglQubOp(1,1,  2) + \
+            np.sqrt(2.) * ( sglQubOp(1,0, 2)*sglQubOp(0,1, 0) + sglQubOp(1,0, 0)*sglQubOp(0,1, 2)  )  )
+        s.assertEqual( resQsq, goldQsq )
 
         # *********
         # Now test locopProductToPauli() for non-commuting cases
@@ -136,6 +141,9 @@ class dlevel_tests(unittest.TestCase):
         # ************************************************
         # Do it all from scratch. 2-site hubbard model
         hubb2 = compositeOperator()
+        hubb2.appendSubsystem(ss1)
+        hubb2.appendSubsystem(ss1)
+
         k = 0.3
         hubb2.addHamTerm(k, [(0, "qhoCr"), (1, "qhoAn")])
 
