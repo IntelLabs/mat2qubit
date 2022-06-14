@@ -40,3 +40,7 @@ If you'd like to contribute, please install with dev dependencies:
 
 To ease the pain of keeping the code style, you can use [pre-commit](https://pre-commit.com), with the provided `.pre-commit-config.yaml` file.
 
+In order to run tests please run:
+
+`python -m unittest *_TEST.py`
+
