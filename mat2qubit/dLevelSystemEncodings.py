@@ -96,7 +96,7 @@ class dLevelSubsystem:
         name (string): Optional name for the 'particle'.
     """
 
-    def __init__(s, d, enc=None, encParams=None, inpName=None):
+    def __init__(self, d, enc=None, encParams=None, inpName=None):
         """
         Args:
             d (int): Number of levels in the 'particle'.
@@ -105,25 +105,25 @@ class dLevelSubsystem:
                 for block unary)
             name (string): Optional name for the 'particle'.
         """
-        s.d = d
-        s.enc = enc
+        self.d = d
+        self.enc = enc
         assert encParams is None or isinstance(encParams, dict)
-        s.encParams = deepcopy(encParams)
+        self.encParams = deepcopy(encParams)
 
-        s.qubitShift = 0
-        s.nqubits = 0
+        self.qubitShift = 0
+        self.nqubits = 0
         if enc is not None:
-            s.nqubits = i2b.getBitCount(d - 1, enc, encParams)
+            self.nqubits = i2b.getBitCount(d - 1, enc, encParams)
 
-        s.name = ""
+        self.name = ""
         if inpName:
-            s.name = inpName
+            self.name = inpName
 
-        # s.tags = set()
+        # self.tags = set()
         # if inpTag:
-        #     s.tags.add(inpTag)
+        #     self.tags.add(inpTag)
 
-    def setEncoding(s, enc, encParams=None):
+    def setEncoding(self, enc, encParams=None):
         """Set the encoding for the particle.
 
         For block unary, user may use e.g. enc='bu_gray_3' instead of
@@ -135,12 +135,12 @@ class dLevelSubsystem:
 
         assert encParams is None or isinstance(encParams, dict)
 
-        s.enc = enc
-        s.encParams = deepcopy(encParams)
+        self.enc = enc
+        self.encParams = deepcopy(encParams)
 
-        s.nqubits = i2b.getBitCount(s.d - 1, enc, encParams)
+        self.nqubits = i2b.getBitCount(self.d - 1, enc, encParams)
 
-    def set_d(s, d):
+    def set_d(self, d):
         """Set d for the particle.
 
         Args:
@@ -149,13 +149,13 @@ class dLevelSubsystem:
 
         assert isinstance(d, (int, np.integer))
 
-        s.d = d
-        if s.enc is None:
-            s.nqubits = 0
+        self.d = d
+        if self.enc is None:
+            self.nqubits = 0
         else:
-            s.nqubits = i2b.getBitCount(s.d - 1, s.enc, s.encParams)
+            self.nqubits = i2b.getBitCount(self.d - 1, self.enc, self.encParams)
 
-    def setQubitShift(s, shiftval):
+    def setQubitShift(self, shiftval):
         """Set Qubit Shift
 
         When converted to Pauli operator, this specifies how many qubits to
@@ -164,9 +164,9 @@ class dLevelSubsystem:
         Args:
             shiftval (int): Number of qubits to shift by.
         """
-        s.qubitShift = shiftval
+        self.qubitShift = shiftval
 
-    def opToMatrixRep(s, inpOp):
+    def opToMatrixRep(self, inpOp):
         """Returns the matrix representation of a d-by-d operator.
 
         If inpOp is a string, returns matrix repr. If inpOp is an np.array,
@@ -184,55 +184,55 @@ class dLevelSubsystem:
             assert inpOp in builtInOps, inpOp
 
             if inpOp == "ident":
-                return np.eye(s.d)
+                return np.eye(self.d)
             elif inpOp == "numop":
-                return qopmats.numop(s.d)
+                return qopmats.numop(self.d)
             elif inpOp == "Nsq":
-                return qopmats.Nsq(s.d)
+                return qopmats.Nsq(self.d)
             elif inpOp == "qhoCr":
-                return qopmats.cr(s.d)
+                return qopmats.cr(self.d)
             elif inpOp == "qhoAn":
-                return qopmats.an(s.d)
+                return qopmats.an(self.d)
 
             elif inpOp == "ad":
-                return qopmats.cr(s.d)
+                return qopmats.cr(self.d)
             elif inpOp == "a":
-                return qopmats.an(s.d)
+                return qopmats.an(self.d)
             elif inpOp == "n":
-                return qopmats.numop(s.d)
+                return qopmats.numop(self.d)
 
             elif inpOp == "qhoPos" or inpOp == "q":
-                return qopmats.posQho(s.d)
+                return qopmats.posQho(self.d)
             elif inpOp == "qhoMom" or inpOp == "p":
-                return qopmats.momQho(s.d)
+                return qopmats.momQho(self.d)
             elif inpOp == "Qsq":
-                return qopmats.posQhoSq(s.d)
+                return qopmats.posQhoSq(self.d)
             elif inpOp == "Psq" or inpOp == "p2":
-                return qopmats.momQhoSq(s.d)
+                return qopmats.momQhoSq(self.d)
 
             elif inpOp == "q2":
-                return qopmats.q2(s.d)
+                return qopmats.q2(self.d)
             elif inpOp == "q3":
-                return qopmats.q3(s.d)
+                return qopmats.q3(self.d)
             elif inpOp == "q4":
-                return qopmats.q4(s.d)
+                return qopmats.q4(self.d)
             elif inpOp == "q5":
-                return qopmats.q5(s.d)
+                return qopmats.q5(self.d)
             elif inpOp == "q6":
-                return qopmats.q6(s.d)
+                return qopmats.q6(self.d)
 
             elif inpOp == "Sx":
-                return qopmats.spinX(float(s.d - 1) / 2.0)
+                return qopmats.spinX(float(self.d - 1) / 2.0)
             elif inpOp == "Sy":
-                return qopmats.spinY(float(s.d - 1) / 2.0)
+                return qopmats.spinY(float(self.d - 1) / 2.0)
             elif inpOp == "Sz":
-                return qopmats.spinZ(float(s.d - 1) / 2.0)
+                return qopmats.spinZ(float(self.d - 1) / 2.0)
             elif inpOp == "X_1stQ":
-                return qopmats.X_1stQuant(s.d, 1)
+                return qopmats.X_1stQuant(self.d, 1)
 
             elif inpOp[:2] == "Pr":  # Projector
                 lev = int(inpOp[2:])
-                return qopmats.proj(lev, s.d)
+                return qopmats.proj(lev, self.d)
 
                 # IMPORTANT NOTE: The projection operators, just like any other
                 # operator, ignores the bits outside the bitmask.
@@ -247,12 +247,12 @@ class dLevelSubsystem:
                 spl = inpOp.split("b")
                 ket = int(spl[0][1:])
                 bra = int(spl[1])
-                return qopmats.singleElement(s.d, ket, bra)
+                return qopmats.singleElement(self.d, ket, bra)
 
             else:
                 raise Exception("Operator '" + inpOp + "' not supported")
 
-    def opToPauli(s, inpOp):
+    def opToPauli(self, inpOp):
         """Returns the Pauli operator for the inputted operator
 
         This may be a string (member of builtInOps) or an explicit matrix
@@ -262,41 +262,41 @@ class dLevelSubsystem:
             inpOp (string, numpy.array): d-by-d operator
         """
 
-        if s.enc is None:
+        if self.enc is None:
             raise Exception("Encoding for subsystem not yet set.")
 
         # Return identity right away if that's correct operator
         if isinstance(inpOp, np.ndarray):
-            if np.array_equal(inpOp, np.eye(s.d)):
+            if np.array_equal(inpOp, np.eye(self.d)):
                 return QubitOperator.identity()
         elif inpOp == "ident":
             return QubitOperator.identity()
 
         # Replace strings with appropriate matrices
         if isinstance(inpOp, str):
-            inpOp = s.opToMatrixRep(inpOp)
+            inpOp = self.opToMatrixRep(inpOp)
 
         # Confirm matrix size
-        assert inpOp.shape == (s.d, s.d), inpOp.shape
+        assert inpOp.shape == (self.d, self.d), inpOp.shape
 
         # L_max = d - 1
-        lmax = s.d - 1
+        lmax = self.d - 1
 
         # Init full pauli operator to 0.
         fullPauliOp = QubitOperator()
 
         # Loop through matrix elements
-        for i in range(s.d):
-            for j in range(s.d):
+        for i in range(self.d):
+            for j in range(self.d):
                 if inpOp[i, j] == 0.0:
                     continue
 
                 matval = inpOp[i, j]
 
-                I = i2b.int2bits(i, lmax, s.enc, s.encParams)  # noqa: E741
-                J = i2b.int2bits(j, lmax, s.enc, s.encParams)
-                imask = i2b.getBitMask(i, lmax, s.enc, s.encParams)
-                jmask = i2b.getBitMask(j, lmax, s.enc, s.encParams)
+                I = i2b.int2bits(i, lmax, self.enc, self.encParams)  # noqa: E741
+                J = i2b.int2bits(j, lmax, self.enc, self.encParams)
+                imask = i2b.getBitMask(i, lmax, self.enc, self.encParams)
+                jmask = i2b.getBitMask(j, lmax, self.enc, self.encParams)
                 # OR operation on the two masks (union of the masks):
                 mask = np.array(imask) | np.array(jmask)
 
@@ -309,13 +309,13 @@ class dLevelSubsystem:
                         continue
 
                     # Possible inputs: |0><0|,|0><1|,|1><0|,|1><1|
-                    pauliString *= sglQubOp(I[bitId], J[bitId], bitId + s.qubitShift)
+                    pauliString *= sglQubOp(I[bitId], J[bitId], bitId + self.qubitShift)
 
                 fullPauliOp += pauliString
 
         return fullPauliOp
 
-    def locopProductToPauli(s, locopList):
+    def locopProductToPauli(self, locopList):
         """Convert list of products to Pauli operator
 
         Args:
@@ -325,25 +325,25 @@ class dLevelSubsystem:
         """
 
         # Begin with identity
-        matrep = np.eye(s.d)
+        matrep = np.eye(self.d)
 
         for locop in locopList:
 
             # Order matters, since not all loc ops commute.
-            matrep = np.dot(matrep, s.opToMatrixRep(locop))
+            matrep = np.dot(matrep, self.opToMatrixRep(locop))
 
-        return s.opToPauli(matrep)
+        return self.opToPauli(matrep)
 
-    def getNumQub(s, recalc=True):
+    def getNumQub(self, recalc=True):
 
         if recalc:
-            s.nqubits = i2b.getBitCount(s.d - 1, s.enc, s.encParams)
+            self.nqubits = i2b.getBitCount(self.d - 1, self.enc, self.encParams)
 
-        return s.nqubits
+        return self.nqubits
 
-    def __str__(s):
+    def __str__(self):
 
-        return "Particle, d={}, enc={} [{}]".format(s.d, s.enc, s.encParams)
+        return "Particle, d={}, enc={} [{}]".format(self.d, self.enc, self.encParams)
 
 
 class compositeDLevels:
@@ -360,12 +360,12 @@ class compositeDLevels:
         totalQubits (int): Total qubits of composite system
     """
 
-    def __init__(s, defaultEnc=None):
+    def __init__(self, defaultEnc=None):
 
-        s.subsystems = []  # List of dlevel subsystem objects
-        s.totalQubits = 0
+        self.subsystems = []  # List of dlevel subsystem objects
+        self.totalQubits = 0
 
-    def appendSubsystem(s, inpSubSys, doCopy=True):
+    def appendSubsystem(self, inpSubSys, doCopy=True):
         """Add a subsystem (particle) to the composite system
 
         Args:
@@ -375,25 +375,25 @@ class compositeDLevels:
 
         # doCopy determines whether to run deepcopy
         if doCopy:
-            s.subsystems.append(deepcopy(inpSubSys))
+            self.subsystems.append(deepcopy(inpSubSys))
         else:
-            s.subsystems.append(inpSubSys)
+            self.subsystems.append(inpSubSys)
 
         # Get most recently added subsystem
-        ss = s.subsystems[-1]
+        ss = self.subsystems[-1]
 
-        # Assign the correct qubit spacing, and update s.totalQubits
-        ss.qubitShift = s.totalQubits
-        s.totalQubits += ss.nqubits
+        # Assign the correct qubit spacing, and update self.totalQubits
+        ss.qubitShift = self.totalQubits
+        self.totalQubits += ss.nqubits
 
         # return the id of the subsystem
-        return len(s.subsystems) - 1
+        return len(self.subsystems) - 1
 
-    def createAndAppendSubSystem(s, d, enc=None, encParams=None):
+    def createAndAppendSubSystem(self, d, enc=None, encParams=None):
         """Not implemented"""
         raise Exception("Not implemented.")
 
-    def opStringToPauli(s, coeff, opString):
+    def opStringToPauli(self, coeff, opString):
         """Returns Pauli operator for a single multi-subsystem product term.
 
         opString is a list of tuples, [(ss1id,op1),(ss2id,op2),...];
@@ -431,11 +431,11 @@ class compositeDLevels:
         pauliOp = QubitOperator.identity()  # Identity
 
         for ssid, locopList in ssidDictOps.items():
-            pauliOp *= s.subsystems[ssid].locopProductToPauli(locopList)
+            pauliOp *= self.subsystems[ssid].locopProductToPauli(locopList)
 
         return coeff * pauliOp
 
-    def opStringToMatRep(s, coeff, opString, ignore_encoding=False):
+    def opStringToMatRep(self, coeff, opString, ignore_encoding=False):
         """Returns matrix repr in full Hilbert space.
 
         Args:
@@ -453,16 +453,18 @@ class compositeDLevels:
             # Loop over opString
             # (can't assume anything. It could be e.g. 'q0 p7 p0 q2 q0')
             # For dict of matrices (Identities of each subsystem size)
-            num_ss = len(s.subsystems)
+            num_ss = len(self.subsystems)
             mats_by_ssid = dict(
                 [
                     (i, spr.eye(ssize))
-                    for (i, ssize) in zip(range(num_ss), [ss.d for ss in s.subsystems])
+                    for (i, ssize) in zip(
+                        range(num_ss), [ss.d for ss in self.subsystems]
+                    )
                 ]
             )
             if opString != "ident":
                 for ssid, locop in tuple(opString):
-                    locmat = s.subsystems[ssid].opToMatrixRep(locop)
+                    locmat = self.subsystems[ssid].opToMatrixRep(locop)
                     mats_by_ssid[ssid] = mats_by_ssid[ssid].dot(locmat)
 
             # [::-1] for reverse order
@@ -473,21 +475,21 @@ class compositeDLevels:
         else:
 
             # Convert to Pauli
-            pop = s.opStringToPauli(coeff, opString)
+            pop = self.opStringToPauli(coeff, opString)
 
             # Then use pauli_op_to_matrix( pop , nq=None , m2q_ordering=True )
-            nq = s.getNumQub()
+            nq = self.getNumQub()
             spr_matrep_opstr = pauli_op_to_matrix(pop, nq)
 
         return spr_matrep_opstr
 
-    def setEncoding(s, ss, enc, encParams=None):
+    def setEncoding(self, ss, enc, encParams=None):
         """Not implemented"""
         raise NotImplementedError()
         # assert( enc in i2b.encodings )
         # assert( encParams==None or isinstance(encParams,dict) )
 
-    def setEncodingForAllSS(s, enc, encParams=None):
+    def setEncodingForAllSS(self, enc, encParams=None):
         """Sets same encoding for all particles.
 
         Note that the qubitshift in each particle is updated appropriately.
@@ -499,28 +501,28 @@ class compositeDLevels:
 
         qubshift = 0
 
-        for ssid, ss in enumerate(s.subsystems):
+        for ssid, ss in enumerate(self.subsystems):
 
             ss.setEncoding(enc, encParams)  # Inside here, ss.nqubits is updated
             ss.setQubitShift(qubshift)
             # Now update qubshift
             qubshift += ss.nqubits
 
-    def setDForAllSS(s, d):
+    def setDForAllSS(self, d):
         """Set d for all subsystems (particles)."""
 
         qubshift = 0
 
-        for ssid, ss in enumerate(s.subsystems):
+        for ssid, ss in enumerate(self.subsystems):
 
             ss.set_d(d)  # Inside function, ss.nqubits is determined
             ss.setQubitShift(qubshift)
             qubshift += ss.nqubits
 
-    def getNumQub(s, recalc=True):
+    def getNumQub(self, recalc=True):
         """Get number of qubits for whoe composite system."""
 
-        ds = [ss.getNumQub(recalc=recalc) for ss in s.subsystems]
+        ds = [ss.getNumQub(recalc=recalc) for ss in self.subsystems]
         return sum(ds)
 
 
@@ -544,21 +546,21 @@ class compositeOperator(compositeDLevels):
         hamTerms (list): List of Hamiltonian terms
     """
 
-    def __init__(s, inpCompositeSys=None, defaultEnc=None):
+    def __init__(self, inpCompositeSys=None, defaultEnc=None):
 
         assert inpCompositeSys is None or isinstance(inpCompositeSys, compositeDLevels)
         # isinstance(inpCompositeSys,super(compositeOperator)) )
 
         # Run the constructor of parent object. And take from inpCS.
         if inpCompositeSys is None:
-            super(compositeOperator, s).__init__(defaultEnc)
+            super(compositeOperator, self).__init__(defaultEnc)
         else:
-            s.subsystems = deepcopy(inpCompositeSys.subsystems)
-            s.totalQubits = inpCompositeSys.totalQubits
+            self.subsystems = deepcopy(inpCompositeSys.subsystems)
+            self.totalQubits = inpCompositeSys.totalQubits
 
-        s.hamTerms = []
+        self.hamTerms = []
 
-    def addHamTerm(s, coeff, opString):
+    def addHamTerm(self, coeff, opString):
         """Add a term (coefficient times operator product) to operator.
 
         Note that one may of course have multiple operators on the same particle,
@@ -573,34 +575,34 @@ class compositeOperator(compositeDLevels):
         # Consider adding a check for whether all ssid are valid
 
         if opString == "ident":
-            s.addIdentityTerm(coeff)
+            self.addIdentityTerm(coeff)
             return
 
         # Rudimentary check to at least see if it's an iterable of tuples
         assert isinstance(opString[0], tuple)
 
-        s.hamTerms.append((coeff, tuple(deepcopy(opString))))
+        self.hamTerms.append((coeff, tuple(deepcopy(opString))))
 
-    def addIdentityTerm(s, coeff):
+    def addIdentityTerm(self, coeff):
         """Add identity term, with given coefficient."""
-        s.hamTerms.append((coeff, "ident"))
+        self.hamTerms.append((coeff, "ident"))
 
-    def opToPauli(s):
+    def opToPauli(self):
         """Return Pauli representation of this multi-particle operator."""
 
         pauliHam = QubitOperator()  # 0.0
 
-        # for cmdId,cmd in enumerate(s.circCommands):
-        for term in s.hamTerms:
+        # for cmdId,cmd in enumerate(self.circCommands):
+        for term in self.hamTerms:
 
             coeff = term[0]
             opString = term[1]
 
-            pauliHam += s.opStringToPauli(coeff, opString)
+            pauliHam += self.opStringToPauli(coeff, opString)
 
         return pauliHam
 
-    def toFullMatRep(s, ignore_encoding=False):
+    def toFullMatRep(self, ignore_encoding=False):
         """Returns full Hilbert space matrix representation
 
         If ignore_encoding is True, then it's the full Hilbert
@@ -608,34 +610,34 @@ class compositeOperator(compositeDLevels):
         """
 
         if ignore_encoding:
-            ssSizes = [ss.d for ss in s.subsystems]
+            ssSizes = [ss.d for ss in self.subsystems]
             hilbSize = np.prod(ssSizes)
         else:
-            hilbSize = 2 ** s.getNumQub()
+            hilbSize = 2 ** self.getNumQub()
 
         # Start with identity
         fullmatrep = spr.lil_matrix((hilbSize, hilbSize), dtype=complex)
 
-        for term in s.hamTerms:
+        for term in self.hamTerms:
 
             coeff = term[0]
             opString = term[1]
 
-            fullmatrep += s.opStringToMatRep(coeff, opString, ignore_encoding)
+            fullmatrep += self.opStringToMatRep(coeff, opString, ignore_encoding)
 
         return fullmatrep
 
-    def compareHamsEqual(s, inp):
+    def compareHamsEqual(self, inp):
         """Returns true if equal (checks if sorted operator terms are equal)."""
 
         assert isinstance(inp, compositeOperator)
 
-        if not (sorted(s.hamTerms) == sorted(inp.hamTerms)):
+        if not (sorted(self.hamTerms) == sorted(inp.hamTerms)):
             return False
 
         return True
 
-    def __eq__(s, obj):
+    def __eq__(self, obj):
         """Returns true if equal (checks if sorted operator terms are equal)."""
 
         assert isinstance(obj, compositeOperator)
@@ -643,43 +645,43 @@ class compositeOperator(compositeDLevels):
         if not isinstance(obj, compositeOperator):
             return False
 
-        if not (sorted(s.hamTerms) == sorted(obj.hamTerms)):
+        if not (sorted(self.hamTerms) == sorted(obj.hamTerms)):
             return False
 
         return True
 
-    def __str__(s):
+    def __str__(self):
 
-        return str(s.hamTerms)
+        return str(self.hamTerms)
 
-    def __mul__(s, inp):
+    def __mul__(self, inp):
 
         # Assert is compositeOperator
         assert isinstance(inp, compositeOperator)
 
         # Find out which compositeOperator has more subsystems
-        numSS_a = len(s.subsystems)
+        numSS_a = len(self.subsystems)
         numSS_b = len(inp.subsystems)
 
         # Confirm all subsystems have same properties
         for ssid in range(min(numSS_a, numSS_b)):
-            assert s.subsystems[ssid].d == inp.subsystems[ssid].d
-            assert s.subsystems[ssid].enc == inp.subsystems[ssid].enc
-            assert s.subsystems[ssid].encParams == inp.subsystems[ssid].encParams
+            assert self.subsystems[ssid].d == inp.subsystems[ssid].d
+            assert self.subsystems[ssid].enc == inp.subsystems[ssid].enc
+            assert self.subsystems[ssid].encParams == inp.subsystems[ssid].encParams
 
         # Create new object
         newOp = compositeOperator()
 
         # Populate with subsystems
         if numSS_a >= numSS_b:
-            op_with_more_ss = s
+            op_with_more_ss = self
         else:
             op_with_more_ss = inp
         for ssid in range(max(numSS_a, numSS_b)):  # *Max* of the two
             newOp.appendSubsystem(deepcopy(op_with_more_ss.subsystems[ssid]))
 
         # Multiply terms together
-        for (i, termA) in enumerate(s.hamTerms):
+        for (i, termA) in enumerate(self.hamTerms):
 
             for (j, termB) in enumerate(inp.hamTerms):
 
@@ -699,14 +701,14 @@ class compositeOperator(compositeDLevels):
 class compositeQasmBuilder:
     """Simple class for outputting Trotterized QASM circuits."""
 
-    def __init__(s):
+    def __init__(self):
 
         # List of commands. Just HAM and ENC
-        s.circCommands = []
+        self.circCommands = []
 
-        s.pointerToCompositeSys = None
+        self.pointerToCompositeSys = None
 
-    def addHamTerm(s, coeff, opString):
+    def addHamTerm(self, coeff, opString):
         """Add term to the Hamiltonian"""
         # coeff is a number
         # opString is a list of tuples [ (ssid,) , (,) ]
@@ -714,29 +716,29 @@ class compositeQasmBuilder:
         cmd = ["HAM"]
         cmd.append(coeff)
         cmd.append(deepcopy(opString))
-        s.circCommands.append(cmd)
+        self.circCommands.append(cmd)
 
-    def addBreak(s):
-        s.circCommands.append(
+    def addBreak(self):
+        self.circCommands.append(
             [
                 "BREAK",
             ]
         )
 
-    def addComment(s, cmt):
-        s.circCommands.append(["COMMENT", cmt])
+    def addComment(self, cmt):
+        self.circCommands.append(["COMMENT", cmt])
 
-    def addEncodingConversion(s, ssid, encFrom, encTo, ssidTo=None):
+    def addEncodingConversion(self, ssid, encFrom, encTo, ssidTo=None):
         """Not implemented"""
         pass
 
-    def hamToPauli(s, compositeSys):
+    def hamToPauli(self, compositeSys):
 
         assert isinstance(compositeSys, compositeDLevels)
 
         pauliHam = QubitOperator()  # 0.0
 
-        for cmdId, cmd in enumerate(s.circCommands):
+        for cmdId, cmd in enumerate(self.circCommands):
 
             cmdType = cmd[0]
             coeff = cmd[1]
@@ -748,7 +750,7 @@ class compositeQasmBuilder:
 
         return pauliHam
 
-    def yieldPauliOpsIncludeBreaks(s, compositeSys):
+    def yieldPauliOpsIncludeBreaks(self, compositeSys):
 
         # Include breaks means that you'll stop at ENC commands
         # (and possibly other future break-type commands)
@@ -757,7 +759,7 @@ class compositeQasmBuilder:
 
         assert isinstance(compositeSys, compositeDLevels)
 
-        for cmdId, cmd in enumerate(s.circCommands):
+        for cmdId, cmd in enumerate(self.circCommands):
 
             cmdType = cmd[0]
 
@@ -780,18 +782,18 @@ class compositeQasmBuilder:
 
         yield pauliOp
 
-    def yieldPauliOpsEachTerm(s, compositeSys):
+    def yieldPauliOpsEachTerm(self, compositeSys):
         pass
 
-    def getPauliOpsIgnoreEnc(s, compositeSys):
+    def getPauliOpsIgnoreEnc(self, compositeSys):
         pass
 
     # Counts upper bound of #CNOTs
-    def countCnotUBound_IncludeBreaks(s, compositeSys):
+    def countCnotUBound_IncludeBreaks(self, compositeSys):
 
         nCnot = 0
 
-        for pauliString in s.yieldPauliOpsIncludeBreaks(compositeSys):
+        for pauliString in self.yieldPauliOpsIncludeBreaks(compositeSys):
 
             # assert(is_hermitian(pauliString))
 

@@ -19,7 +19,7 @@ class dlevel_tests(unittest.TestCase):
     def setup(self):
         pass
 
-    def test_simpleops(s):
+    def test_simpleops(self):
 
         ii = QubitOperator("")
         x0 = QubitOperator("X0")
@@ -40,13 +40,13 @@ class dlevel_tests(unittest.TestCase):
         # print(gold)
         # print()
         # print(res)
-        s.assertEqual(res, gold)
-        s.assertEqual(ss1.nqubits, 2)
+        self.assertEqual(res, gold)
+        self.assertEqual(ss1.nqubits, 2)
 
         # ** Test inputting matrep instead of character string
         res = ss1.opToPauli(np.diag([0.0, 1, 2]))
         gold = 0.75 * ii + 0.25 * z0 - 0.75 * z0 * z1 - 0.25 * z1
-        s.assertEqual(res, gold)
+        self.assertEqual(res, gold)
 
         ss1.setEncoding("gray")
         # not completed
@@ -56,22 +56,30 @@ class dlevel_tests(unittest.TestCase):
             x2 - 1j * y2
         ) * (x1 + 1j * y1)
         res = ss1.opToPauli("qhoCr")
-        s.assertEqual(res, gold)
-        s.assertEqual(ss1.nqubits, 3)
+        self.assertEqual(res, gold)
+        self.assertEqual(ss1.nqubits, 3)
 
         # ** Test inputting matrep instead of character string
         # res = ss1.opToPauli(np.diag([0.,1,2]))
         res = ss1.opToPauli("numop")
         gold = (3 * ii - 1 * z1 - 2 * z2) / 2
-        s.assertEqual(res, gold)
+        self.assertEqual(res, gold)
 
         # Test locopProductToPauli
         # The code first multiplies the matrix reps of q*q=q^2
         # Takes resulting matrix rep, and maps that to Pauli
-        resQsq  = ss1.locopProductToPauli( ("qhoPos","qhoPos") )
-        goldQsq = 0.5* ( 1.*sglQubOp(1,1,  0) + 3.*sglQubOp(1,1,  1) + 2.*sglQubOp(1,1,  2) + \
-            np.sqrt(2.) * ( sglQubOp(1,0, 2)*sglQubOp(0,1, 0) + sglQubOp(1,0, 0)*sglQubOp(0,1, 2)  )  )
-        s.assertEqual( resQsq, goldQsq )
+        resQsq = ss1.locopProductToPauli(("qhoPos", "qhoPos"))
+        goldQsq = 0.5 * (
+            1.0 * sglQubOp(1, 1, 0)
+            + 3.0 * sglQubOp(1, 1, 1)
+            + 2.0 * sglQubOp(1, 1, 2)
+            + np.sqrt(2.0)
+            * (
+                sglQubOp(1, 0, 2) * sglQubOp(0, 1, 0)
+                + sglQubOp(1, 0, 0) * sglQubOp(0, 1, 2)
+            )
+        )
+        self.assertEqual(resQsq, goldQsq)
 
         # *********
         # Now test locopProductToPauli() for non-commuting cases
@@ -81,32 +89,32 @@ class dlevel_tests(unittest.TestCase):
         opstr_a_ad = ("qhoAn", "qhoCr")
         res_a_ad = ss2.locopProductToPauli(opstr_a_ad)
         gold_a_ad = QubitOperator("0.5 [] + 0.5 [Z7]")
-        s.assertEqual(res_a_ad, gold_a_ad)
+        self.assertEqual(res_a_ad, gold_a_ad)
 
         # ad*a
         opstr_ad_a = ["qhoCr", "qhoAn"]
         res_ad_a = ss2.locopProductToPauli(opstr_ad_a)
         gold_ad_a = QubitOperator("0.5 [] - 0.5[Z7]")
-        s.assertEqual(res_ad_a, gold_ad_a)
+        self.assertEqual(res_ad_a, gold_ad_a)
 
-    def test_ss_qub_count(s):
+    def test_ss_qub_count(self):
 
         ss = dLevelSubsystem(2)
         ss.setEncoding("blockunary", {"g": 3, "localEncodingFunc": "gray"})
         ss.set_d(2)
-        s.assertEqual(ss.nqubits, 2)
+        self.assertEqual(ss.nqubits, 2)
         ss.set_d(3)
-        s.assertEqual(ss.nqubits, 2)
+        self.assertEqual(ss.nqubits, 2)
         ss.set_d(4)
-        s.assertEqual(ss.nqubits, 4)
+        self.assertEqual(ss.nqubits, 4)
         ss.set_d(5)
-        s.assertEqual(ss.nqubits, 4)
+        self.assertEqual(ss.nqubits, 4)
         ss.set_d(6)
-        s.assertEqual(ss.nqubits, 4)
+        self.assertEqual(ss.nqubits, 4)
         ss.set_d(7)
-        s.assertEqual(ss.nqubits, 6)
+        self.assertEqual(ss.nqubits, 6)
 
-    def test_compositesystem(s):
+    def test_compositesystem(self):
 
         # ** Two-site, two-level systems, a_0^ a_1, unary
         # Create a subsystem
@@ -134,7 +142,7 @@ class dlevel_tests(unittest.TestCase):
         # print()
         # print(gold)
 
-        s.assertEqual(res, gold)
+        self.assertEqual(res, gold)
 
         # ************************************************
         # Test compositeOperator(), the child class of compositeDLevels()
@@ -155,9 +163,9 @@ class dlevel_tests(unittest.TestCase):
             * sglQubOp(1, 0, 2)
             * sglQubOp(0, 1, 3)
         )
-        s.assertEqual(resPauli, gold)
+        self.assertEqual(resPauli, gold)
 
-    def test_getNumQub(s):
+    def test_getNumQub(self):
 
         """
         unary 3  - 3
@@ -175,9 +183,9 @@ class dlevel_tests(unittest.TestCase):
 
         gold = 10
         res = compop.getNumQub()
-        s.assertEqual(gold, res)
+        self.assertEqual(gold, res)
 
-    def test_ketbra(s):
+    def test_ketbra(self):
 
         d = 15
         dlev = dLevelSubsystem(d=d)
@@ -192,7 +200,7 @@ class dlevel_tests(unittest.TestCase):
         gold[12, 13] = 1.0
         np.testing.assert_array_equal(gold, resmat)
 
-    def test_matreps(s):
+    def test_matreps(self):
         # Identity is tested in here as well
 
         # *** First test ***
@@ -225,11 +233,11 @@ class dlevel_tests(unittest.TestCase):
 
         # Compare
         res = compOp.toFullMatRep(ignore_encoding=True).todense()
-        s.assertEqual(res.tolist(), gold.tolist())
+        self.assertEqual(res.tolist(), gold.tolist())
 
         # Make sure older ordering *doesn't* work
         falsegold = 3.0 * np.kron(ad, a) + 2.0 * np.eye(9)
-        s.assertNotEqual(res.tolist(), falsegold.tolist())
+        self.assertNotEqual(res.tolist(), falsegold.tolist())
 
         # *** 2nd test ***
         # Testing multiple ops on same subsystem
@@ -293,7 +301,7 @@ class dlevel_tests(unittest.TestCase):
 
         np.testing.assert_array_almost_equal(gold, res)
 
-    def test_multiply(s):
+    def test_multiply(self):
 
         # Two subsystems
         compOp = compositeOperator()
@@ -336,7 +344,7 @@ class dlevel_tests(unittest.TestCase):
         # print(goldOp.hamTerms)
 
         # Assert equal
-        s.assertEqual(goldOp, res)
+        self.assertEqual(goldOp, res)
 
         # Reverse ordering of multiplication
         reverseGoldOp = compositeOperator()
@@ -370,11 +378,11 @@ class dlevel_tests(unittest.TestCase):
         )
 
         # Assert not equal for the reverse-multiplied case.
-        s.assertNotEqual(reverseGoldOp, res)
-        # s.assertNotEqual( goldOp, res)  <-- this one fails. Great.
+        self.assertNotEqual(reverseGoldOp, res)
+        # self.assertNotEqual( goldOp, res)  <-- this one fails. Great.
 
         # Assert equal though if you reverse the multiplication
-        s.assertEqual(reverseGoldOp, compOp_b * compOp)
+        self.assertEqual(reverseGoldOp, compOp_b * compOp)
 
 
 if __name__ == "__main__":
