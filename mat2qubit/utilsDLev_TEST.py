@@ -10,7 +10,6 @@ from io import StringIO
 import numpy as np
 import scipy.linalg as la
 import scipy.sparse as spr
-from ns_primitives import dotx, krx
 from openfermion import (
     BosonOperator,
     QuadOperator,
@@ -338,10 +337,10 @@ BREAK
         manualComposDOp.addHamTerm(1.1, [(0, op_01), (1, op_10)])
 
         # Gold matrix op
-        goldMatOp = 5.6 * krx(np.array([[1, 0], [0, 0]], dtype=complex), np.eye(d))
-        goldMatOp += 5.6 * krx(np.array([[0, 0], [0, 1]]), np.array([[1, 0], [0, 0]]))
-        goldMatOp += 1.1 * krx(np.array([[0, 0], [1, 0]]), np.array([[0, 1], [0, 0]]))
-        goldMatOp += 1.1 * krx(np.array([[0, 1], [0, 0]]), np.array([[0, 0], [1, 0]]))
+        goldMatOp =  5.6*np.kron( np.array([[1,0],[0,0]],dtype=complex) , np.eye(d) )
+        goldMatOp += 5.6*np.kron( np.array([[0,0],[0,1]]) , np.array([[1,0],[0,0]]) )
+        goldMatOp += 1.1*np.kron( np.array([[0,0],[1,0]]) , np.array([[0,1],[0,0]]) )
+        goldMatOp += 1.1*np.kron( np.array([[0,1],[0,0]]) , np.array([[0,0],[1,0]]) )
 
         # *** Now do with the QASM-builder ***
         stringStream1 = StringIO(filecontents1)
