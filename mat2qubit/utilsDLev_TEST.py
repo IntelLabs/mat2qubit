@@ -34,8 +34,6 @@ from helperDLev import sglQubOp
 # import mat2qubit.qopmats as qopmats
 
 
-
-
 class dlevelutils_tests(unittest.TestCase):
 
     # static variables declared here

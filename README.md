@@ -38,9 +38,9 @@ If you'd like to contribute, please install with dev dependencies:
 
 `python -m pip install '.[dev]'`
 
-To ease the pain of keeping the code style, you can use [pre-commit](https://pre-commit.com), with the provided `.pre-commit-config.yaml` file.
+To ease the pain of keeping the code style consistent, you can use [pre-commit](https://pre-commit.com), with the provided `.pre-commit-config.yaml` file.
 
 In order to run tests please run:
 
-`python -m unittest *_TEST.py`
+`python -m unittest mat2qubit/*_TEST.py`
 
