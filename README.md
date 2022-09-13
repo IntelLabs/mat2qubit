@@ -11,9 +11,10 @@
 
 The package can be used to implement different encodings for which there are often depth-space tradeoffs or other resource tradeoffs (see references below). The built-in encodings include <b>standard binary</b>, <b>Gray code</b>, <b>unary (one-hot)</b>, and <b>block unary</b>. User-defined embeddings may be added by modifying `integer2bit.py`. This package is a partial implementation of the "discrete quantum intermediate representation" (DQIR) developed in reference [2] below.
 
-Mathematical and theoretical details can be found in these references:
-1. Sawaya, NPD, Menke, T, Kyaw, TH, Johri, S, Aspuru-Guzik, A and Guerreschi, GG. [npj Quantum Information, 6(49)](https://www.nature.com/articles/s41534-020-0278-0) (2020).
-2. Sawaya, NPD, Schmitz, AT, and Hadfield, S. arXiv preprint [arXiv:2203.14432](https://arxiv.org/abs/2203.14432) (2022).
+Mathematical and theoretical details can be found in the following references. If you use the code, please cite an appropriate subset of these.
+1. Sawaya, NPD. <i>mat2qubit: A lightweight pythonic package for qubit encodings of vibrational, bosonic, graph coloring, routing, scheduling, and general matrix problems.</i> [arXiv:2205.09776](https://arxiv.org/abs/2205.09776) (2022).
+2. Sawaya, NPD, Menke, T, Kyaw, TH, Johri, S, Aspuru-Guzik, A and Guerreschi, GG. [npj Quantum Information, 6(49)](https://www.nature.com/articles/s41534-020-0278-0) (2020).
+3. Sawaya, NPD, Schmitz, AT, and Hadfield, S. arXiv preprint [arXiv:2203.14432](https://arxiv.org/abs/2203.14432) (2022).
 
 Please see the two files in the `examples/` directory for worked examples of Bose-Hubbard model, chemical vibrations, classical linear algebra, spin-<i>s</i> models, graph coloring, traveling salesperson problem, and machine scheduling.
 
